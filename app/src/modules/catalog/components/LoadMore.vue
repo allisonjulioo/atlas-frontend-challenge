@@ -8,7 +8,7 @@
   </div>
 
   <p v-else-if="showEndMessage" class="load-more__end" role="status">
-    Você chegou ao fim da lista.
+    Isso é tudo.
   </p>
 </template>
 
