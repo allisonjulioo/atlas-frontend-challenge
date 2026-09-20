@@ -33,6 +33,8 @@
       </template>
     </div>
 
+    <AtlasBackToTop />
+
     <dialog :ref="setDialog" class="catalog-view__drawer" @close="close" @click.self="close">
       <motion.div
         class="catalog-view__drawer-inner"
@@ -56,7 +58,7 @@
 import { onBeforeUnmount, onMounted, onServerPrefetch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { motion } from 'motion-v'
-import { AtlasButton, AtlasEmptyState } from '@atlas/design-system'
+import { AtlasBackToTop, AtlasButton, AtlasEmptyState } from '@atlas/design-system'
 import { useCatalogDrawer } from '@/modules/catalog/hooks/useCatalogDrawer'
 import { useCatalogList } from '@/modules/catalog/hooks/useCatalogList'
 import { useCatalogSummary } from '@/modules/catalog/hooks/useCatalogSummary'
