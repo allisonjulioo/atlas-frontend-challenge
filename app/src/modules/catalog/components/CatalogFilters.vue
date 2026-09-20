@@ -147,7 +147,7 @@ const { isCategoryChecked, isAvailabilityChecked, isBucketDisabled } = useCatalo
   @apply flex flex-col gap-4;
 
   &__head {
-    @apply flex items-center justify-between gap-3;
+    @apply flex items-center justify-between gap-3 lg:min-h-11;
   }
 
   &__title {
