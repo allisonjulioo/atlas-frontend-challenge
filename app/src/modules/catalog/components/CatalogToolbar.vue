@@ -1,14 +1,5 @@
 <template>
   <div class="catalog-toolbar">
-    <AtlasSearchField
-      id="catalog-search"
-      v-model="term"
-      label="Buscar profissional"
-      placeholder="Buscar por nome ou profissão"
-      :maxlength="maxLength"
-      @submit="submit"
-    />
-
     <div class="catalog-toolbar__actions">
       <button class="catalog-toolbar__action" type="button" @click="open">
         <svg viewBox="0 0 20 20" aria-hidden="true">
@@ -70,21 +61,15 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { AtlasSearchField } from '@atlas/design-system'
 import { SORT_KEYS, SORT_LABEL } from '@atlas/contracts'
 import { useCatalogDrawer } from '@/modules/catalog/hooks/useCatalogDrawer'
 import { useCatalogFacets } from '@/modules/catalog/hooks/useCatalogFacets'
 import { useCatalogFilters } from '@/modules/catalog/hooks/useCatalogFilters'
 import { useCatalogSummary } from '@/modules/catalog/hooks/useCatalogSummary'
-import { useCatalogSearch } from '@/modules/catalog/hooks/useCatalogSearch'
 
 const { query, activeCount } = storeToRefs(useCatalogFilters())
 
 const { setSort, setDistance } = useCatalogFilters()
-
-const { term, maxLength } = storeToRefs(useCatalogSearch())
-
-const { submit } = useCatalogSearch()
 
 const { distanceOptions } = storeToRefs(useCatalogFacets())
 

@@ -10,8 +10,6 @@ export const LOAD_MORE_ROOT_MARGIN = '400px 0px'
 
 export const SEARCH_MAX_LENGTH = 80
 
-export const ALL_CATEGORIES = 'todas'
-
 export const RATING_OPTIONS = [
   { value: 4.5, label: '4,5 ou mais' },
   { value: 4, label: '4,0 ou mais' },

@@ -1,14 +1,5 @@
 <template>
-  <div class="catalog-page">
-    <header class="catalog-page__hero">
-      <h1 class="catalog-page__title">Encontre o profissional certo</h1>
-      <p class="catalog-page__subtitle">
-        Eletricistas, cabeleireiros, professores e mais, com valor, avaliação e disponibilidade à vista.
-      </p>
-    </header>
-
-    <RemoteCatalogCatalogView />
-  </div>
+  <RemoteCatalogCatalogView title="Explorar" />
 </template>
 
 <script setup lang="ts">
@@ -36,17 +27,3 @@ useHead({
   meta: [{ name: 'robots', content: computed(() => (isFiltered.value ? 'noindex,follow' : 'index,follow')) }],
 })
 </script>
-
-<style lang="scss" scoped>
-.catalog-page {
-  @apply flex flex-col gap-10;
-
-  &__title {
-    @apply text-3xl font-bold md:text-4xl;
-  }
-
-  &__subtitle {
-    @apply mt-3 max-w-[56ch] text-lg text-content-muted;
-  }
-}
-</style>

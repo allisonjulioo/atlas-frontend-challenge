@@ -1,8 +1,12 @@
 <template>
   <div class="catalog-view">
-    <CatalogToolbar class="catalog-view__toolbar" />
+    <header class="catalog-view__head">
+      <h1 class="catalog-view__title">{{ title }}</h1>
 
-    <CategoryTabs class="catalog-view__tabs" />
+      <CatalogSearch class="catalog-view__search" />
+    </header>
+
+    <CatalogToolbar class="catalog-view__toolbar" />
 
     <aside class="catalog-view__sidebar">
       <CatalogFilters />
@@ -55,9 +59,11 @@ import { useCatalogSummary } from '@/modules/catalog/hooks/useCatalogSummary'
 import CatalogChips from '@/modules/catalog/components/CatalogChips.vue'
 import CatalogFilters from '@/modules/catalog/components/CatalogFilters.vue'
 import CatalogGrid from '@/modules/catalog/components/CatalogGrid.vue'
+import CatalogSearch from '@/modules/catalog/components/CatalogSearch.vue'
 import CatalogToolbar from '@/modules/catalog/components/CatalogToolbar.vue'
-import CategoryTabs from '@/modules/catalog/components/CategoryTabs.vue'
 import LoadMore from '@/modules/catalog/components/LoadMore.vue'
+
+withDefaults(defineProps<{ title?: string }>(), { title: 'Encontre profissionais' })
 
 const { hasActiveFilters } = storeToRefs(useCatalogFilters())
 
@@ -82,18 +88,28 @@ onBeforeUnmount(reset)
 .catalog-view {
   @apply grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start lg:gap-x-12;
 
-  grid-template-areas: 'toolbar' 'tabs' 'results';
+  grid-template-areas: 'head' 'toolbar' 'results';
 
   @screen lg {
-    grid-template-areas: 'sidebar toolbar' 'sidebar tabs' 'sidebar results';
+    grid-template-areas: 'head head' 'sidebar toolbar' 'sidebar results';
+  }
+
+  &__head {
+    @apply flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-8;
+
+    grid-area: head;
+  }
+
+  &__title {
+    @apply text-xl font-bold md:text-4xl;
+  }
+
+  &__search {
+    @apply w-full sm:max-w-md;
   }
 
   &__toolbar {
     grid-area: toolbar;
-  }
-
-  &__tabs {
-    grid-area: tabs;
   }
 
   &__results {
