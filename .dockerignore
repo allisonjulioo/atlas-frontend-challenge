@@ -1,0 +1,12 @@
+node_modules
+**/node_modules
+**/.nuxt
+**/.output
+**/.nitro
+**/.cache
+**/dist
+docs
+api/vendor
+storybook-static
+*.log
+.git
