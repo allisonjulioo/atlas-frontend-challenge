@@ -84,5 +84,19 @@ export const useCatalogList = defineStore('catalogList', () => {
 
   watch(filtersKey, () => load())
 
-  return { items, total, facets, pending, loadingMore, errorMessage, init, load, loadMore, reset }
+  return {
+    response,
+    extra,
+    loadedPage,
+    items,
+    total,
+    facets,
+    pending,
+    loadingMore,
+    errorMessage,
+    init,
+    load,
+    loadMore,
+    reset,
+  }
 })
