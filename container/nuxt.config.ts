@@ -33,6 +33,8 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE ?? 'http://localhost:3001',
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
+      docsUrl: process.env.NUXT_PUBLIC_DOCS_URL ?? 'http://localhost:3004',
+      storybookUrl: process.env.NUXT_PUBLIC_STORYBOOK_URL ?? 'http://localhost:6006',
       remoteManifests: [UI_REMOTE, CATALOG_REMOTE],
     },
   },

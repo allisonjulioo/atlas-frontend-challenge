@@ -7,10 +7,13 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   themeConfig: {
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/allisonjulioo/atlas-frontend-challenge' },
+    ],
     nav: [
-      { text: 'Arquitetura', link: '/architecture/' },
-      { text: 'Decisões', link: '/decisions' },
-      { text: 'Desafio', link: '/challenge' },
+      { text: 'Container', link: 'http://localhost:3000', target: '_blank' },
+      { text: 'API', link: 'http://localhost:3001/professionals', target: '_blank' },
+      { text: 'Design system', link: 'http://localhost:6006', target: '_blank' },
     ],
     sidebar: [
       {

@@ -1,5 +1,7 @@
 export const PROFILE_BASE_PATH = '/profissionais'
 
+export const REPO_URL = 'https://github.com/allisonjulioo/atlas-frontend-challenge'
+
 export const ROUTE_NAME = {
   catalogList: 'catalog-list',
   professionalProfile: 'professional-profile',
