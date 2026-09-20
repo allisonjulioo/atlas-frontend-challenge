@@ -6,7 +6,7 @@
         :src="professional.coverUrl"
         :alt="`Foto de ${professional.name}, ${professional.profession}`"
         width="600"
-        height="800"
+        height="450"
         :loading="priority ? 'eager' : 'lazy'"
         :fetchpriority="priority ? 'high' : 'auto'"
         decoding="async"
@@ -110,16 +110,25 @@ const handleClick = (event: MouseEvent) => {
     shadow-card transition-[box-shadow,transform] duration-base ease-atlas;
 
   content-visibility: auto;
-  contain-intrinsic-size: auto 420px;
+  contain-intrinsic-size: auto 350px;
 
   &:hover {
     @apply -translate-y-0.5 shadow-card-hover;
   }
 
   &__media {
-    @apply relative overflow-hidden bg-surface-soft;
+    @apply grid overflow-hidden bg-surface-soft;
 
-    aspect-ratio: 3 / 4;
+    grid-template-areas: 'stack';
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    aspect-ratio: 4 / 3;
+
+    > * {
+      @apply min-h-0 min-w-0;
+
+      grid-area: stack;
+    }
   }
 
   &__image {
@@ -131,11 +140,11 @@ const handleClick = (event: MouseEvent) => {
   }
 
   &__flags {
-    @apply absolute left-3 top-3 m-0 flex list-none flex-col items-start gap-1 p-0;
+    @apply z-10 m-3 flex list-none flex-col items-start gap-1 self-start justify-self-start p-0;
   }
 
   &__favorite {
-    @apply absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full
+    @apply z-20 m-3 grid h-9 w-9 place-items-center self-start justify-self-end rounded-full
       border-none bg-surface/85 text-content-muted backdrop-blur;
 
     &:hover {
@@ -152,7 +161,7 @@ const handleClick = (event: MouseEvent) => {
   }
 
   &__overlay {
-    @apply absolute inset-x-0 bottom-0 flex flex-col gap-1 px-4 pb-4 pt-12;
+    @apply z-10 flex flex-col gap-1 self-end px-4 pb-4 pt-12;
 
     background: linear-gradient(to top, rgb(var(--atlas-ink) / 82%), transparent);
   }
@@ -174,7 +183,7 @@ const handleClick = (event: MouseEvent) => {
       @apply outline-none ring-0;
 
       &::after {
-        @apply ring-2 ring-inset ring-white;
+        @apply ring-2 ring-inset ring-accent;
       }
     }
   }

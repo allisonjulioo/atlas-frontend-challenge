@@ -31,7 +31,7 @@
   &__media {
     @apply w-full rounded-none;
 
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 4 / 3;
   }
 
   &__body {
