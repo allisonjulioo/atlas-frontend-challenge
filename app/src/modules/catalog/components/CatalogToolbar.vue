@@ -88,7 +88,7 @@ const { toggle } = useCatalogDrawer()
   @apply flex flex-col gap-5;
 
   &__actions {
-    @apply flex flex-wrap items-center gap-x-6 gap-y-3;
+    @apply flex flex-wrap items-center gap-x-5 gap-y-3 sm:gap-x-6;
   }
 
   &__filters {
@@ -100,7 +100,7 @@ const { toggle } = useCatalogDrawer()
   }
 
   &__group {
-    @apply ml-auto flex min-w-0 items-center gap-6;
+    @apply flex min-w-0 items-center gap-5 sm:ml-auto sm:gap-6;
   }
 
   &__count {

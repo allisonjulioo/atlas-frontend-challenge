@@ -40,7 +40,9 @@
         :animate="isOpen ? DRAWER_VISIBLE : DRAWER_HIDDEN"
         :transition="DRAWER_TRANSITION"
       >
-        <CatalogFilters />
+        <div class="catalog-view__drawer-scroll">
+          <CatalogFilters />
+        </div>
 
         <div class="catalog-view__drawer-footer">
           <AtlasButton block @click="close">{{ drawerActionLabel }}</AtlasButton>
@@ -168,13 +170,17 @@ onBeforeUnmount(() => {
   }
 
   &__drawer-inner {
-    @apply flex max-h-[85dvh] flex-col gap-6 overflow-y-auto px-5 pb-5 pt-6;
+    @apply flex max-h-[85dvh] flex-col px-5 pb-5 pt-6;
+  }
+
+  &__drawer-scroll {
+    @apply -mr-2 min-h-0 flex-1 overflow-y-auto pr-2;
 
     overscroll-behavior: contain;
   }
 
   &__drawer-footer {
-    @apply sticky -bottom-4 bg-surface py-3;
+    @apply flex-none bg-surface pt-4;
   }
 }
 </style>

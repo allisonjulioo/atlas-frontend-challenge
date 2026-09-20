@@ -154,7 +154,7 @@ onBeforeUnmount(reset)
   }
 
   &__cta {
-    @apply flex flex-col gap-5 rounded-card bg-surface p-6 shadow-card lg:sticky lg:top-[var(--atlas-header-offset)];
+    @apply flex flex-col gap-5 rounded-card bg-surface p-5 shadow-card md:p-6 lg:sticky lg:top-[var(--atlas-header-offset)];
 
     grid-area: cta;
   }
