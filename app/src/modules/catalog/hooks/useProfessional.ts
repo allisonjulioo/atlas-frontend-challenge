@@ -25,6 +25,10 @@ export const useProfessional = defineStore('professional', () => {
     notFound.value = false
     errorMessage.value = null
 
+    if (!slug.value) {
+      return Promise.resolve()
+    }
+
     return getProfessionalService(slug.value)
       .then((result) => {
         professional.value = result
