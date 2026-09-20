@@ -10,6 +10,8 @@ export const LOAD_MORE_ROOT_MARGIN = '400px 0px'
 
 export const SEARCH_MAX_LENGTH = 80
 
+export const DESKTOP_MEDIA_QUERY = '(min-width: 1024px)'
+
 export const DISTANCE_MAX_KM = 20
 
 export const DISTANCE_STEP_KM = 1

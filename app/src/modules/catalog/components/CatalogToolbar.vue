@@ -1,7 +1,7 @@
 <template>
   <div class="catalog-toolbar">
     <div class="catalog-toolbar__actions">
-      <button class="catalog-toolbar__action" type="button" @click="open">
+      <button class="catalog-toolbar__action" type="button" @click="toggle">
         <svg viewBox="0 0 20 20" aria-hidden="true">
           <path d="M3 6h14M6 10h8M8.5 14h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
         </svg>
@@ -73,7 +73,7 @@ const { setSort, setDistance } = useCatalogFilters()
 
 const { totalLabel } = storeToRefs(useCatalogSummary())
 
-const { open } = useCatalogDrawer()
+const { toggle } = useCatalogDrawer()
 </script>
 
 <style lang="scss" scoped>

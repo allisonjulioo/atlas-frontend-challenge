@@ -1,5 +1,5 @@
 <template>
-  <div class="catalog-view">
+  <div class="catalog-view" :class="{ 'catalog-view--collapsed': !isSidebarOpen }">
     <header class="catalog-view__head">
       <h1 class="catalog-view__title">{{ title }}</h1>
 
@@ -8,9 +8,14 @@
 
     <CatalogToolbar class="catalog-view__toolbar" />
 
-    <aside class="catalog-view__sidebar">
+    <motion.aside
+      class="catalog-view__sidebar"
+      :class="{ 'catalog-view__sidebar--collapsed': !isSidebarOpen }"
+      :animate="isSidebarOpen ? SIDEBAR_VISIBLE : SIDEBAR_HIDDEN"
+      :transition="SIDEBAR_TRANSITION"
+    >
       <CatalogFilters />
-    </aside>
+    </motion.aside>
 
     <div class="catalog-view__results">
       <CatalogChips />
@@ -37,13 +42,18 @@
     </div>
 
     <dialog :ref="setDialog" class="catalog-view__drawer" @close="close" @click.self="close">
-      <div class="catalog-view__drawer-inner">
+      <motion.div
+        class="catalog-view__drawer-inner"
+        :initial="DRAWER_HIDDEN"
+        :animate="isOpen ? DRAWER_VISIBLE : DRAWER_HIDDEN"
+        :transition="DRAWER_TRANSITION"
+      >
         <CatalogFilters />
 
         <div class="catalog-view__drawer-footer">
           <AtlasButton block @click="close">{{ drawerActionLabel }}</AtlasButton>
         </div>
-      </div>
+      </motion.div>
     </dialog>
   </div>
 </template>
@@ -51,6 +61,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, onServerPrefetch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { motion } from 'motion-v'
 import { AtlasButton, AtlasEmptyState } from '@atlas/design-system'
 import { useCatalogDrawer } from '@/modules/catalog/hooks/useCatalogDrawer'
 import { useCatalogFilters } from '@/modules/catalog/hooks/useCatalogFilters'
@@ -65,6 +76,18 @@ import LoadMore from '@/modules/catalog/components/LoadMore.vue'
 
 withDefaults(defineProps<{ title?: string }>(), { title: 'Encontre profissionais' })
 
+const SIDEBAR_TRANSITION = { duration: 0.22, ease: [0.22, 1, 0.36, 1] }
+
+const SIDEBAR_VISIBLE = { opacity: 1, x: 0 }
+
+const SIDEBAR_HIDDEN = { opacity: 0, x: -24 }
+
+const DRAWER_TRANSITION = { type: 'spring', stiffness: 420, damping: 38 } as const
+
+const DRAWER_VISIBLE = { opacity: 1, y: 0 }
+
+const DRAWER_HIDDEN = { opacity: 0, y: 32 }
+
 const { hasActiveFilters } = storeToRefs(useCatalogFilters())
 
 const { clearAll } = useCatalogFilters()
@@ -75,23 +98,40 @@ const { isEmpty, drawerActionLabel } = storeToRefs(useCatalogSummary())
 
 const { init, load, reset } = useCatalogList()
 
-const { setDialog, close } = useCatalogDrawer()
+const { isOpen, isSidebarOpen } = storeToRefs(useCatalogDrawer())
+
+const { setDialog, close, init: initDrawer, reset: resetDrawer } = useCatalogDrawer()
 
 onServerPrefetch(init)
 
-onMounted(init)
+onMounted(() => {
+  initDrawer()
+  init()
+})
 
-onBeforeUnmount(reset)
+onBeforeUnmount(() => {
+  resetDrawer()
+  reset()
+})
 </script>
 
 <style lang="scss" scoped>
 .catalog-view {
   @apply grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start lg:gap-x-12;
 
+  @screen lg {
+    transition: grid-template-columns 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      column-gap 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   grid-template-areas: 'head' 'toolbar' 'results';
 
   @screen lg {
     grid-template-areas: 'head head' 'sidebar toolbar' 'sidebar results';
+  }
+
+  &--collapsed {
+    @apply lg:gap-x-0 lg:grid-cols-[0px_minmax(0,1fr)];
   }
 
   &__head {
@@ -120,6 +160,10 @@ onBeforeUnmount(reset)
     @apply hidden lg:sticky lg:top-8 lg:block lg:max-h-[calc(100dvh-4rem)] lg:overflow-y-auto;
 
     grid-area: sidebar;
+
+    &--collapsed {
+      @apply pointer-events-none lg:overflow-hidden;
+    }
   }
 
   &__error {
