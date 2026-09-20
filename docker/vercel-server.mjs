@@ -7,7 +7,7 @@ globalThis.fetch = (input, init) => {
   let url
 
   try {
-    url = new URL(address)
+    url = new URL(address, publicOrigin)
   } catch {
     return nativeFetch(input, init)
   }

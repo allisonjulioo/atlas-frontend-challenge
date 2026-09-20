@@ -38,4 +38,15 @@ PORT=3000 HOST=127.0.0.1 node /usr/local/bin/atlas-vercel-server.mjs &
 web_pid=$!
 
 trap 'kill "$api_pid" "$web_pid" 2>/dev/null || true' EXIT TERM INT
+
+attempt=0
+until php -r '$api = @fsockopen("127.0.0.1", 3001, $api_errno, $api_error, 0.1); $web = @fsockopen("127.0.0.1", 3000, $web_errno, $web_error, 0.1); if ($api) fclose($api); if ($web) fclose($web); exit($api && $web ? 0 : 1);'; do
+    attempt=$((attempt + 1))
+    if [ "$attempt" -ge 300 ] || ! kill -0 "$api_pid" 2>/dev/null || ! kill -0 "$web_pid" 2>/dev/null; then
+        echo 'The application did not start in time' >&2
+        exit 1
+    fi
+    sleep 0.1
+done
+
 nginx -g 'daemon off;'

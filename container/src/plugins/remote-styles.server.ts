@@ -1,9 +1,9 @@
 import { fetchRemoteStylesheets } from '@/shared/utils/fetch-remote-stylesheets'
 
 export default defineNuxtPlugin(async () => {
-  const { remoteManifests } = useRuntimeConfig().public
+  const { remoteManifests, siteUrl } = useRuntimeConfig().public
 
-  const stylesheets = await Promise.all(remoteManifests.map(fetchRemoteStylesheets))
+  const stylesheets = await Promise.all(remoteManifests.map(manifest => fetchRemoteStylesheets(new URL(manifest, siteUrl).href)))
 
   const link = [...new Set(stylesheets.flat())].map(href => ({
     rel: 'stylesheet' as const,

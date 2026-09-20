@@ -23,8 +23,8 @@ export default defineNuxtConfig({
         { rel: 'icon', href: '/favicon.ico', sizes: '32x32' },
         { rel: 'icon', type: 'image/png', href: '/favicon.png', sizes: '120x120' },
         { rel: 'apple-touch-icon', href: '/favicon.png' },
-        { rel: 'preconnect', href: new URL(UI_REMOTE).origin, crossorigin: '' },
-        { rel: 'preconnect', href: new URL(CATALOG_REMOTE).origin, crossorigin: '' },
+        ...(!process.env.ATLAS_VERCEL_BUILD ? [{ rel: 'preconnect', href: new URL(UI_REMOTE).origin, crossorigin: '' }] : []),
+        ...(!process.env.ATLAS_VERCEL_BUILD ? [{ rel: 'preconnect', href: new URL(CATALOG_REMOTE).origin, crossorigin: '' }] : []),
         { rel: 'dns-prefetch', href: 'https://randomuser.me' },
       ],
     },
@@ -51,11 +51,19 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-09-20',
 
   nitro: {
-    compressPublicAssets: { brotli: true, gzip: true },
+    compressPublicAssets: !process.env.ATLAS_VERCEL_BUILD,
     externals: { trace: false },
   },
 
   vite: {
+    plugins: [{
+      name: 'atlas-vercel-remote-urls',
+      apply: 'build',
+      renderChunk(code) {
+        if (this.environment?.name !== 'client') return null
+        return code.replaceAll('https://atlas.invalid/remotes/', '/remotes/')
+      },
+    }],
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
