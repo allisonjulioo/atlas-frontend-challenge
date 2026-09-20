@@ -13,7 +13,7 @@
 import { computed } from 'vue'
 
 const props = withDefaults(defineProps<{
-  variant?: 'primary' | 'accent' | 'secondary' | 'ghost'
+  variant?: 'primary' | 'accent' | 'secondary' | 'ghost' | 'text'
   size?: 'sm' | 'md'
   as?: 'button' | 'a'
   href?: string
@@ -83,6 +83,18 @@ const attributes = computed(() => {
 
     &:hover {
       @apply bg-surface-soft text-content;
+    }
+  }
+
+  &--text {
+    @apply bg-transparent px-0 text-content-subtle;
+
+    &:hover {
+      @apply bg-transparent text-content;
+    }
+
+    &:focus-visible {
+      @apply text-content outline-none;
     }
   }
 
