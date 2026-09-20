@@ -1,5 +1,5 @@
 <template>
-  <ul class="profile-gallery">
+  <AtlasCarousel class="profile-gallery" label="Trabalhos recentes">
     <li v-for="(image, index) in gallery" :key="image.url" class="profile-gallery__item">
       <img
         class="profile-gallery__image"
@@ -11,11 +11,12 @@
         decoding="async"
       >
     </li>
-  </ul>
+  </AtlasCarousel>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { AtlasCarousel } from '@atlas/design-system'
 import { useProfessionalDetails } from '@/modules/catalog/hooks/useProfessionalDetails'
 
 const { gallery } = storeToRefs(useProfessionalDetails())
@@ -23,16 +24,8 @@ const { gallery } = storeToRefs(useProfessionalDetails())
 
 <style lang="scss" scoped>
 .profile-gallery {
-  @apply m-0 flex list-none gap-3 overflow-x-auto p-0 pb-2;
-
-  scroll-snap-type: x mandatory;
-  overscroll-behavior-x: contain;
-  scrollbar-width: thin;
-
   &__item {
-    @apply w-[min(78vw,340px)] flex-none;
-
-    scroll-snap-align: start;
+    @apply w-[min(78vw,340px)];
   }
 
   &__image {
