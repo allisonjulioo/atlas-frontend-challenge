@@ -1,5 +1,5 @@
 <template>
-  <AnimatePresence>
+  <AnimatePresence mode="wait">
     <motion.button
       v-if="isVisible"
       class="atlas-back-to-top"
