@@ -36,19 +36,21 @@
     </header>
 
     <aside class="professional-profile__cta">
-      <AtlasPriceTag :value="professional.hourlyRate" size="lg" />
+      <div class="professional-profile__cta-card">
+        <AtlasPriceTag :value="professional.hourlyRate" size="lg" />
 
-      <div class="professional-profile__actions">
-        <AtlasButton variant="accent" block>Solicitar orçamento</AtlasButton>
-        <AtlasButton variant="secondary" block @click="toggleFavorite">{{ favoriteLabel }}</AtlasButton>
-      </div>
-
-      <dl class="professional-profile__facts">
-        <div v-for="fact in facts" :key="fact.key">
-          <dt>{{ fact.label }}</dt>
-          <dd>{{ fact.value }}</dd>
+        <div class="professional-profile__actions">
+          <AtlasButton variant="accent" block>Solicitar orçamento</AtlasButton>
+          <AtlasButton variant="secondary" block @click="toggleFavorite">{{ favoriteLabel }}</AtlasButton>
         </div>
-      </dl>
+
+        <dl class="professional-profile__facts">
+          <div v-for="fact in facts" :key="fact.key">
+            <dt>{{ fact.label }}</dt>
+            <dd>{{ fact.value }}</dd>
+          </div>
+        </dl>
+      </div>
     </aside>
 
     <div class="professional-profile__body">
@@ -66,7 +68,9 @@
         <h2 class="professional-profile__section-title">Trabalhos recentes</h2>
         <ProfileGallery />
       </section>
+    </div>
 
+    <div class="professional-profile__tail">
       <section v-if="reviews.length" class="professional-profile__section">
         <h2 class="professional-profile__section-title">
           Avaliações
@@ -121,10 +125,10 @@ onBeforeUnmount(reset)
   @apply grid grid-cols-[minmax(0,1fr)] gap-10
     lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-x-14;
 
-  grid-template-areas: 'header' 'cta' 'body';
+  grid-template-areas: 'header' 'cta' 'body' 'tail';
 
   @screen lg {
-    grid-template-areas: 'header cta' 'body cta';
+    grid-template-areas: 'header cta' 'body cta' 'tail tail';
   }
 
   &__header {
@@ -154,9 +158,14 @@ onBeforeUnmount(reset)
   }
 
   &__cta {
-    @apply flex flex-col gap-5 rounded-card bg-surface p-5 shadow-card md:p-6 lg:sticky lg:top-[var(--atlas-header-offset)];
+    @apply lg:self-stretch;
 
     grid-area: cta;
+  }
+
+  &__cta-card {
+    @apply flex flex-col gap-5 rounded-card bg-surface p-5 shadow-card md:p-6
+      lg:sticky lg:top-[var(--atlas-header-offset)];
   }
 
   &__actions {
@@ -183,6 +192,12 @@ onBeforeUnmount(reset)
     @apply flex min-w-0 flex-col gap-12;
 
     grid-area: body;
+  }
+
+  &__tail {
+    @apply flex min-w-0 flex-col gap-12;
+
+    grid-area: tail;
   }
 
   &__section {
