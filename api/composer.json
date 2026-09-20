@@ -1,0 +1,24 @@
+{
+  "name": "atlas/api",
+  "description": "API do catalogo de profissionais",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.3",
+    "ext-json": "*",
+    "slim/slim": "^4.14",
+    "slim/psr7": "^1.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "Atlas\\Api\\": "src/"
+    }
+  },
+  "scripts": {
+    "seed": "php bin/seed.php",
+    "serve": "PHP_CLI_SERVER_WORKERS=4 php -S 0.0.0.0:3001 -t public public/router.php"
+  },
+  "config": {
+    "sort-packages": true
+  }
+}

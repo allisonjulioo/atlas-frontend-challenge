@@ -1,0 +1,17 @@
+FROM php:8.4-apache
+
+RUN a2enmod rewrite headers deflate
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+COPY composer.json composer.lock* ./
+RUN composer install --no-dev --no-interaction --no-progress --optimize-autoloader
+
+COPY . .
+
+RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf \
+    && printf '<Directory /var/www/html/public>\n    AllowOverride All\n    Require all granted\n</Directory>\n' >> /etc/apache2/apache2.conf
+
+EXPOSE 80
