@@ -6,8 +6,6 @@
       <CatalogSearch class="catalog-view__search" />
     </header>
 
-    <CatalogToolbar class="catalog-view__toolbar" />
-
     <motion.aside
       class="catalog-view__sidebar"
       :class="{ 'catalog-view__sidebar--collapsed': !isSidebarOpen }"
@@ -17,7 +15,9 @@
       <CatalogFilters />
     </motion.aside>
 
-    <div class="catalog-view__results">
+    <div class="catalog-view__main">
+      <CatalogToolbar />
+
       <CatalogChips />
 
       <div v-if="errorMessage" class="catalog-view__error" role="alert">
@@ -25,15 +25,7 @@
         <AtlasButton variant="secondary" size="sm" @click="load">Tentar novamente</AtlasButton>
       </div>
 
-      <AtlasEmptyState
-        v-else-if="isEmpty"
-        title="Nenhum profissional encontrado"
-        description="Tente remover um filtro ou buscar por outra profissão."
-      >
-        <AtlasButton v-if="hasActiveFilters" variant="secondary" @click="clearAll">
-          Limpar filtros
-        </AtlasButton>
-      </AtlasEmptyState>
+      <AtlasEmptyState v-else-if="isEmpty" title="Nenhum profissional encontrado" />
 
       <template v-else>
         <CatalogGrid />
@@ -64,7 +56,6 @@ import { storeToRefs } from 'pinia'
 import { motion } from 'motion-v'
 import { AtlasButton, AtlasEmptyState } from '@atlas/design-system'
 import { useCatalogDrawer } from '@/modules/catalog/hooks/useCatalogDrawer'
-import { useCatalogFilters } from '@/modules/catalog/hooks/useCatalogFilters'
 import { useCatalogList } from '@/modules/catalog/hooks/useCatalogList'
 import { useCatalogSummary } from '@/modules/catalog/hooks/useCatalogSummary'
 import CatalogChips from '@/modules/catalog/components/CatalogChips.vue'
@@ -87,10 +78,6 @@ const DRAWER_TRANSITION = { type: 'spring', stiffness: 420, damping: 38 } as con
 const DRAWER_VISIBLE = { opacity: 1, y: 0 }
 
 const DRAWER_HIDDEN = { opacity: 0, y: 32 }
-
-const { hasActiveFilters } = storeToRefs(useCatalogFilters())
-
-const { clearAll } = useCatalogFilters()
 
 const { errorMessage, pending } = storeToRefs(useCatalogList())
 
@@ -124,10 +111,10 @@ onBeforeUnmount(() => {
       column-gap 220ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  grid-template-areas: 'head' 'toolbar' 'results';
+  grid-template-areas: 'head' 'main';
 
   @screen lg {
-    grid-template-areas: 'head head' 'sidebar toolbar' 'sidebar results';
+    grid-template-areas: 'head head' 'sidebar main';
   }
 
   &--collapsed {
@@ -148,12 +135,10 @@ onBeforeUnmount(() => {
     @apply w-full sm:max-w-md;
   }
 
-  &__toolbar {
-    grid-area: toolbar;
-  }
+  &__main {
+    @apply flex flex-col gap-6;
 
-  &__results {
-    grid-area: results;
+    grid-area: main;
   }
 
   &__sidebar {
