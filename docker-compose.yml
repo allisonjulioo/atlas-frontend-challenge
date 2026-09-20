@@ -1,0 +1,57 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - '3001:80'
+    environment:
+      ATLAS_ALLOWED_ORIGINS: http://localhost:3000,http://localhost:3002,http://localhost:3003
+    volumes:
+      - ./api/data:/var/www/html/data:ro
+
+  design-system:
+    build:
+      context: .
+      dockerfile: docker/node.Dockerfile
+      args:
+        PROJECT: design-system
+    ports:
+      - '3003:3003'
+    environment:
+      PORT: 3003
+      HOST: 0.0.0.0
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/node.Dockerfile
+      args:
+        PROJECT: app
+    ports:
+      - '3002:3002'
+    environment:
+      PORT: 3002
+      HOST: 0.0.0.0
+      NUXT_PUBLIC_API_BASE: http://api
+    depends_on:
+      - api
+      - design-system
+
+  container:
+    build:
+      context: .
+      dockerfile: docker/node.Dockerfile
+      args:
+        PROJECT: container
+    ports:
+      - '3000:3000'
+    environment:
+      PORT: 3000
+      HOST: 0.0.0.0
+      NUXT_PUBLIC_API_BASE: http://api
+      NUXT_PUBLIC_SITE_URL: http://localhost:3000
+      ATLAS_UI_REMOTE: http://design-system:3003/_mf/mf-manifest.json
+      ATLAS_CATALOG_REMOTE: http://app:3002/_mf/mf-manifest.json
+    depends_on:
+      - api
+      - app
+      - design-system
