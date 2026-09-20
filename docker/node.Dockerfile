@@ -1,20 +1,20 @@
-FROM node:24-alpine AS base
+FROM node:24-alpine
 WORKDIR /repo
 
-FROM base AS build
-ARG PROJECT
 COPY package.json tsconfig.base.json ./
 COPY contracts/package.json ./contracts/
 COPY design-system/package.json ./design-system/
 COPY app/package.json ./app/
 COPY container/package.json ./container/
+COPY docs/package.json ./docs/
 RUN npm install --ignore-scripts
-COPY . .
-RUN npm run build --workspace "@atlas/${PROJECT}"
 
-FROM base AS runtime
+COPY . .
+
 ARG PROJECT
-WORKDIR /app
-COPY --from=build /repo/${PROJECT}/.output ./.output
+RUN npm run postinstall --if-present --workspaces \
+    && npm run build --workspace "@atlas/${PROJECT}"
+
+WORKDIR /repo/${PROJECT}
 EXPOSE 3000
 CMD ["node", ".output/server/index.mjs"]
