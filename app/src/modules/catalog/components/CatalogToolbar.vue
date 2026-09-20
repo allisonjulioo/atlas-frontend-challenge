@@ -83,7 +83,7 @@ const { totalLabel } = storeToRefs(useCatalogSummary())
 const { toggle } = useCatalogDrawer()
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .catalog-toolbar {
   @apply flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-8;
 

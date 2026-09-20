@@ -120,7 +120,7 @@ onMounted(init)
 onBeforeUnmount(reset)
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .professional-profile {
   @apply grid grid-cols-[minmax(0,1fr)] gap-10
     lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-x-14;

@@ -24,7 +24,7 @@ const { chips, hasChips } = storeToRefs(useCatalogChips())
 const { remove, clearAll } = useCatalogChips()
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .catalog-chips {
   @apply mb-6 flex gap-2 overflow-x-auto pb-1;
 

@@ -22,7 +22,7 @@ import { useProfessionalDetails } from '@/modules/catalog/hooks/useProfessionalD
 const { gallery } = storeToRefs(useProfessionalDetails())
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .profile-gallery {
   &__item {
     @apply w-[min(78vw,340px)];

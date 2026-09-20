@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .harness {
   @apply flex min-h-dvh flex-col;
 

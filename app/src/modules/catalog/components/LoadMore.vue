@@ -30,7 +30,7 @@ const { loadMore } = useCatalogList()
 onBeforeUnmount(reset)
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .load-more {
   @apply flex flex-col items-center gap-4 py-10;
 

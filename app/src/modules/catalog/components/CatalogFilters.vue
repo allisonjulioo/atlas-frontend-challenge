@@ -142,7 +142,7 @@ const {
 const { isCategoryChecked, isAvailabilityChecked, isBucketDisabled } = useCatalogFacets()
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .catalog-filters {
   @apply flex flex-col gap-4;
 

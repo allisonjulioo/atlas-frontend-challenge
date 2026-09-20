@@ -19,7 +19,7 @@ import { useProfessionalDetails } from '@/modules/catalog/hooks/useProfessionalD
 const { services } = storeToRefs(useProfessionalDetails())
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .profile-services {
   @apply m-0 flex list-none flex-col p-0;
 

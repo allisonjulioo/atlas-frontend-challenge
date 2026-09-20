@@ -110,7 +110,7 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .catalog-view {
   @apply grid grid-cols-[minmax(0,1fr)] gap-8
     lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start lg:gap-x-12;

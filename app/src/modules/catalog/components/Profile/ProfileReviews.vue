@@ -22,7 +22,7 @@ import { useProfessionalDetails } from '@/modules/catalog/hooks/useProfessionalD
 const { reviews } = storeToRefs(useProfessionalDetails())
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .profile-reviews {
   @apply m-0 flex list-none flex-col gap-5 p-0;
 
