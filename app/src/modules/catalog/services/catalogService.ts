@@ -6,11 +6,12 @@ import {
   type Professional,
   type ProfessionalSummary,
 } from '@atlas/contracts'
+import { ofetch } from 'ofetch'
 import { storeToRefs } from 'pinia'
 
 const baseURL = () => storeToRefs(useRuntimeSettings()).settings.value.apiBase
 
-export const getCatalogService = (query: CatalogQuery) => $fetch<CatalogResponse>('/professionals', {
+export const getCatalogService = (query: CatalogQuery) => ofetch<CatalogResponse>('/professionals', {
   baseURL: baseURL(),
   query: {
     ...serializeCatalogQuery(query),
@@ -19,11 +20,11 @@ export const getCatalogService = (query: CatalogQuery) => $fetch<CatalogResponse
   },
 })
 
-export const getProfessionalService = (slug: string) => $fetch<Professional>(`/professionals/${slug}`, {
+export const getProfessionalService = (slug: string) => ofetch<Professional>(`/professionals/${slug}`, {
   baseURL: baseURL(),
 })
 
-export const getRelatedProfessionalsService = (slug: string) => $fetch<ProfessionalSummary[]>(
+export const getRelatedProfessionalsService = (slug: string) => ofetch<ProfessionalSummary[]>(
   `/professionals/related/${slug}`,
   { baseURL: baseURL() },
 )
