@@ -23,6 +23,9 @@ const config: StorybookConfig = {
     disableTelemetry: true,
   },
   viteFinal: (config) => {
+    if (process.env.ATLAS_VERCEL_BUILD) {
+      config.base = '/storybook/'
+    }
     config.plugins ??= []
 
     if (!hasVuePlugin(config.plugins)) {

@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  base: process.env.ATLAS_VERCEL_BUILD ? '/docs/' : '/',
   title: 'Atlas',
   description: 'Documentação do catálogo de profissionais autônomos',
   lang: 'pt-BR',
@@ -16,9 +17,9 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/allisonjulioo/atlas-frontend-challenge' },
     ],
     nav: [
-      { text: 'Container', link: 'http://localhost:3000', target: '_blank' },
-      { text: 'API', link: 'http://localhost:3001/professionals', target: '_blank' },
-      { text: 'Design system', link: 'http://localhost:6006', target: '_blank' },
+      { text: 'Container', link: process.env.ATLAS_VERCEL_BUILD ? '/' : 'http://localhost:3000', target: '_blank' },
+      { text: 'API', link: process.env.ATLAS_VERCEL_BUILD ? '/api/professionals' : 'http://localhost:3001/professionals', target: '_blank' },
+      { text: 'Design system', link: process.env.ATLAS_VERCEL_BUILD ? '/storybook/' : 'http://localhost:6006', target: '_blank' },
     ],
     sidebar: [
       {

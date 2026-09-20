@@ -1,0 +1,66 @@
+FROM node:24-bookworm-slim AS dependencies
+WORKDIR /repo
+
+COPY package.json tsconfig.base.json ./
+COPY contracts/package.json ./contracts/
+COPY design-system/package.json ./design-system/
+COPY app/package.json ./app/
+COPY container/package.json ./container/
+COPY docs/package.json ./docs/
+RUN npm install --ignore-scripts
+
+FROM dependencies AS web-build
+COPY . .
+ENV ATLAS_VERCEL_BUILD=1 \
+    ATLAS_UI_REMOTE=https://atlas.invalid/remotes/ui/_mf/mf-manifest.json \
+    ATLAS_CATALOG_REMOTE=https://atlas.invalid/remotes/catalog/_mf/mf-manifest.json \
+    NUXT_PUBLIC_API_BASE=https://atlas.invalid/api \
+    NUXT_PUBLIC_SITE_URL=https://atlas.invalid \
+    NUXT_PUBLIC_DOCS_URL=https://atlas.invalid/docs/ \
+    NUXT_PUBLIC_STORYBOOK_URL=https://atlas.invalid/storybook/
+RUN npm run postinstall --if-present --workspaces \
+    && npm run build \
+    && npm run build-storybook
+
+FROM dependencies AS runtime-deps
+RUN npm prune --omit=dev --ignore-scripts
+
+FROM php:8.4-cli-bookworm AS api-build
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+WORKDIR /api
+COPY api/composer.json api/composer.lock ./
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends unzip \
+    && rm -rf /var/lib/apt/lists/*
+RUN composer install --no-dev --no-interaction --no-progress --optimize-autoloader
+
+FROM php:8.4-cli-bookworm
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends nginx ca-certificates libstdc++6 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /srv/atlas
+COPY --from=web-build /usr/local/bin/node /usr/local/bin/node
+COPY --from=runtime-deps /repo/node_modules ./node_modules
+COPY --from=web-build /repo/contracts ./contracts
+COPY --from=web-build /repo/design-system/package.json ./design-system/package.json
+COPY --from=web-build /repo/design-system/src ./design-system/src
+COPY --from=web-build /repo/app/package.json ./app/package.json
+COPY --from=web-build /repo/app/src ./app/src
+COPY --from=web-build /repo/container/.output ./container/.output
+COPY --from=web-build /repo/app/.output/public ./app/public
+COPY --from=web-build /repo/design-system/.output/public ./design-system/public
+COPY --from=web-build /repo/docs/.vitepress/dist ./docs/public
+COPY --from=web-build /repo/design-system/storybook-static ./storybook/public
+COPY api ./api
+COPY --from=api-build /api/vendor ./api/vendor
+COPY docker/vercel-nginx.conf /etc/nginx/nginx.conf
+COPY docker/vercel-start.sh /usr/local/bin/atlas-vercel-start
+COPY docker/vercel-server.mjs /usr/local/bin/atlas-vercel-server.mjs
+
+RUN chmod +x /usr/local/bin/atlas-vercel-start \
+    && mkdir -p /run/nginx \
+    && ln -s /srv/atlas /repo
+
+EXPOSE 80
+CMD ["atlas-vercel-start"]

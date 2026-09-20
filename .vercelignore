@@ -1,0 +1,12 @@
+.git
+.vercel
+node_modules
+**/node_modules
+**/.nuxt
+**/.output
+**/.nitro
+**/.cache
+**/dist
+api/vendor
+design-system/storybook-static
+*.log
