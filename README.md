@@ -57,8 +57,8 @@ A semente é fixa: o mesmo comando produz sempre o mesmo arquivo.
 npm run dev
 ```
 
-Sobe os quatro serviços em paralelo: API, container, app e design system. Se ainda não tiver PHP
-instalado, `npm run dev:web` sobe só os três projetos Nuxt.
+Sobe API, container, app, design system, Storybook e documentação em paralelo. Se ainda não tiver
+PHP instalado, `npm run dev:web` sobe tudo menos a API.
 
 A API roda no servidor embutido do PHP com `PHP_CLI_SERVER_WORKERS=4`. Sem os workers ele atende
 uma requisição por vez, e o SSR do container, que busca perfil e relacionados em paralelo, ficaria
@@ -70,6 +70,7 @@ esperando na fila.
 | http://localhost:3001 | API                                 |
 | http://localhost:3002 | Remote `catalog` em modo standalone |
 | http://localhost:3003 | Remote `ui`, publica o manifesto MF |
+| http://localhost:3004 | Documentação                        |
 | http://localhost:6006 | Storybook do design system          |
 
 O container precisa que os dois remotes estejam no ar: ele busca o `mf-manifest.json` de cada um
@@ -81,8 +82,44 @@ durante o setup e carrega os componentes deles no servidor e no navegador.
 docker compose up --build
 ```
 
-Sobe os quatro serviços nas mesmas portas. A API roda em `php:8.4-apache` com `mod_rewrite`; os
-projetos Nuxt rodam do `.output` em Node 24.
+Sobe os seis serviços nas mesmas portas da tabela acima. A API roda em `php:8.4-apache` com
+`mod_rewrite`, os projetos Nuxt rodam do `.output` em Node 24 e Storybook e documentação saem
+como estático em `nginx`.
+
+Todos compartilham a rede do serviço `container`, então dentro e fora dos contêineres os endereços
+são os mesmos. É o que faz o SSR do container alcançar os remotes sem que o navegador precise
+resolver nome de serviço.
+
+### Vercel com Docker
+
+O [Dockerfile.vercel](Dockerfile.vercel) monta uma imagem para a Vercel com o host Nuxt, a API PHP,
+os assets dos dois remotes, a documentação e o Storybook. Um Nginx expõe tudo no mesmo domínio:
+
+| Caminho | Serviço |
+| --- | --- |
+| `/` | Aplicação (Nuxt SSR) |
+| `/api/` | API PHP |
+| `/remotes/catalog/` e `/remotes/ui/` | Assets de Module Federation |
+| `/docs/` | Documentação |
+| `/storybook/` | Storybook |
+
+Para testar a imagem localmente:
+
+```bash
+docker build -f Dockerfile.vercel -t atlas-vercel .
+docker run --rm -p 8080:80 -e ATLAS_PUBLIC_ORIGIN=http://localhost:8080 atlas-vercel
+```
+
+Abra `http://localhost:8080`. O endereço em `ATLAS_PUBLIC_ORIGIN` precisa ser acessível pelo
+navegador; as buscas do SSR pela API e pelos remotes usam a rede interna do contêiner.
+
+Para criar um deploy de preview usando a Vercel CLI, execute `vercel deploy` na raiz do repositório.
+O `Dockerfile.vercel` é detectado automaticamente. No ambiente da Vercel, a imagem usa `VERCEL_URL`
+para montar os endereços dos remotes; se usar um domínio próprio, configure `ATLAS_PUBLIC_ORIGIN`
+apenas no ambiente de produção, com a origem completa (por exemplo,
+`https://catalogo.exemplo.com`). Depois de validar o preview,
+`vercel deploy --prod` publica a versão de produção. O `docker-compose.yml` continua sendo o modo
+de desenvolvimento local; a Vercel implanta a imagem do `Dockerfile.vercel` como uma Function.
 
 ---
 
@@ -90,10 +127,12 @@ projetos Nuxt rodam do `.output` em Node 24.
 
 | Comando             | O que faz                                             |
 | ------------------- | ----------------------------------------------------- |
-| `npm run dev`       | Sobe container, app e design-system em paralelo       |
+| `npm run dev`       | Sobe os seis serviços em paralelo                     |
 | `npm run dev:api`   | Sobe a API PHP no servidor embutido                   |
-| `npm run build`     | Build de produção dos três projetos, na ordem correta |
+| `npm run build`     | Build de produção dos projetos, na ordem correta      |
 | `npm run preview`   | Serve o build de produção                             |
+| `npm run docs`      | Sobe só a documentação                                |
+| `npm run storybook` | Sobe só o Storybook                                   |
 | `npm run seed`      | Regenera o dataset                                    |
 | `npm test`          | Testes unitários                                      |
 | `npm run lint`      | ESLint                                                |

@@ -5,8 +5,8 @@ node_modules
 **/.nitro
 **/.cache
 **/dist
-docs
 api/vendor
 storybook-static
 *.log
 .git
+.vercel

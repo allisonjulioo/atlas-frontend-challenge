@@ -16,6 +16,8 @@ RUN composer install --no-dev --no-interaction --no-progress --optimize-autoload
 COPY . .
 
 RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf \
+    && sed -i 's/<VirtualHost \*:80>/<VirtualHost *:3001>/' /etc/apache2/sites-available/000-default.conf \
+    && sed -i 's/^Listen 80$/Listen 3001/' /etc/apache2/ports.conf \
     && printf '<Directory /var/www/html/public>\n    AllowOverride All\n    Require all granted\n</Directory>\n' >> /etc/apache2/apache2.conf
 
-EXPOSE 80
+EXPOSE 3001

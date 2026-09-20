@@ -23,7 +23,7 @@ atlas-frontend-challenge/
 ├── api/             API PHP (Slim)
 ├── contracts/       tipos, codec de query e formatadores
 ├── docs/            documentação de arquitetura
-└── docker/          imagem Node compartilhada pelos três projetos Nuxt
+└── docker/          imagens Node e nginx usadas pelo compose
 ```
 
 ## Projetos Nuxt

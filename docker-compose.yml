@@ -1,12 +1,39 @@
 services:
+  container:
+    build:
+      context: .
+      dockerfile: docker/node.Dockerfile
+      args:
+        PROJECT: container
+    environment:
+      PORT: 3000
+      HOST: 0.0.0.0
+    command:
+      - sh
+      - -c
+      - |
+        for i in $$(seq 1 60); do
+          wget -q -O /dev/null http://127.0.0.1:3002/_mf/mf-manifest.json \
+            && wget -q -O /dev/null http://127.0.0.1:3003/_mf/mf-manifest.json \
+            && break
+          sleep 1
+        done
+        exec node .output/server/index.mjs
+    ports:
+      - '3000:3000'
+      - '3001:3001'
+      - '3002:3002'
+      - '3003:3003'
+      - '3004:3004'
+      - '6006:6006'
+
   api:
     build: ./api
-    ports:
-      - '3001:80'
-    environment:
-      ATLAS_ALLOWED_ORIGINS: http://localhost:3000,http://localhost:3002,http://localhost:3003
+    network_mode: service:container
     volumes:
       - ./api/data:/var/www/html/data:ro
+    depends_on:
+      - container
 
   design-system:
     build:
@@ -14,11 +41,12 @@ services:
       dockerfile: docker/node.Dockerfile
       args:
         PROJECT: design-system
-    ports:
-      - '3003:3003'
+    network_mode: service:container
     environment:
       PORT: 3003
       HOST: 0.0.0.0
+    depends_on:
+      - container
 
   app:
     build:
@@ -26,32 +54,37 @@ services:
       dockerfile: docker/node.Dockerfile
       args:
         PROJECT: app
-    ports:
-      - '3002:3002'
+    network_mode: service:container
     environment:
       PORT: 3002
       HOST: 0.0.0.0
-      NUXT_PUBLIC_API_BASE: http://api
     depends_on:
-      - api
-      - design-system
+      - container
 
-  container:
+  docs:
     build:
       context: .
-      dockerfile: docker/node.Dockerfile
+      dockerfile: docker/static.Dockerfile
       args:
-        PROJECT: container
-    ports:
-      - '3000:3000'
+        PROJECT: docs
+        BUILD_SCRIPT: build
+        OUTPUT: docs/.vitepress/dist
+    network_mode: service:container
     environment:
-      PORT: 3000
-      HOST: 0.0.0.0
-      NUXT_PUBLIC_API_BASE: http://api
-      NUXT_PUBLIC_SITE_URL: http://localhost:3000
-      ATLAS_UI_REMOTE: http://design-system:3003/_mf/mf-manifest.json
-      ATLAS_CATALOG_REMOTE: http://app:3002/_mf/mf-manifest.json
+      PORT: 3004
     depends_on:
-      - api
-      - app
-      - design-system
+      - container
+
+  storybook:
+    build:
+      context: .
+      dockerfile: docker/static.Dockerfile
+      args:
+        PROJECT: design-system
+        BUILD_SCRIPT: build-storybook
+        OUTPUT: design-system/storybook-static
+    network_mode: service:container
+    environment:
+      PORT: 6006
+    depends_on:
+      - container
