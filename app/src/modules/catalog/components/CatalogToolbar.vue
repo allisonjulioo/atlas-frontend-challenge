@@ -1,57 +1,55 @@
 <template>
   <div class="catalog-toolbar">
     <div class="catalog-toolbar__actions">
-      <button class="catalog-toolbar__action" type="button" @click="toggle">
+      <AtlasButton class="catalog-toolbar__filters" variant="text" size="sm" @click="toggle">
         <svg viewBox="0 0 20 20" aria-hidden="true">
           <path d="M3 6h14M6 10h8M8.5 14h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
         </svg>
         Filtros
-        <span v-if="activeCount" class="catalog-toolbar__count">{{ activeCount }}</span>
-      </button>
 
-      <div class="catalog-toolbar__action catalog-toolbar__action--select">
-        <svg viewBox="0 0 20 20" aria-hidden="true">
-          <path
-            d="M10 2.5c-2.9 0-5.2 2.3-5.2 5.1 0 3.8 5.2 9.9 5.2 9.9s5.2-6.1 5.2-9.9c0-2.8-2.3-5.1-5.2-5.1z"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-          />
-          <circle cx="10" cy="7.6" r="1.9" fill="currentColor" />
-        </svg>
+        <AnimatePresence>
+          <motion.span
+            v-if="activeCount"
+            class="catalog-toolbar__count"
+            :initial="COUNT_HIDDEN"
+            :animate="COUNT_VISIBLE"
+            :exit="COUNT_HIDDEN"
+            :transition="COUNT_TRANSITION"
+          >
+            {{ activeCount }}
+          </motion.span>
+        </AnimatePresence>
+      </AtlasButton>
 
-        <label class="catalog-toolbar__label" for="catalog-distance">Distância</label>
-        <select
+      <div class="catalog-toolbar__group">
+        <AtlasDropdown
           id="catalog-distance"
-          class="catalog-toolbar__select"
-          :value="query.maxDistanceKm ?? ''"
-          @change="setDistance(($event.target as HTMLSelectElement).value)"
+          label="Distância máxima"
+          placeholder="Distância"
+          :options="distanceOptions"
+          :model-value="distanceKey"
+          @update:model-value="setDistance"
         >
-          <option value="">Distância</option>
-          <option v-for="km in DISTANCE_OPTIONS" :key="km" :value="km">Até {{ km }} km</option>
-        </select>
-      </div>
+          <template #icon>
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path
+                d="M10 2.5c-2.9 0-5.2 2.3-5.2 5.1 0 3.8 5.2 9.9 5.2 9.9s5.2-6.1 5.2-9.9c0-2.8-2.3-5.1-5.2-5.1z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              />
+              <circle cx="10" cy="7.6" r="1.9" fill="currentColor" />
+            </svg>
+          </template>
+        </AtlasDropdown>
 
-      <div class="catalog-toolbar__action catalog-toolbar__action--select">
-        <label class="catalog-toolbar__label" for="catalog-sort">Ordenar por</label>
-        <select
+        <AtlasDropdown
           id="catalog-sort"
-          class="catalog-toolbar__select"
-          :value="query.sort"
-          @change="setSort(($event.target as HTMLSelectElement).value)"
-        >
-          <option v-for="key in SORT_KEYS" :key="key" :value="key">{{ SORT_LABEL[key] }}</option>
-        </select>
-
-        <svg class="catalog-toolbar__caret" viewBox="0 0 20 20" aria-hidden="true">
-          <path
-            d="M5.5 8l4.5 4.5L14.5 8"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-          />
-        </svg>
+          label="Ordenar por"
+          :options="sortOptions"
+          :model-value="sortKey"
+          @update:model-value="setSort"
+        />
       </div>
     </div>
 
@@ -61,15 +59,24 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { SORT_KEYS, SORT_LABEL } from '@atlas/contracts'
-import { DISTANCE_OPTIONS } from '@/modules/catalog/constants'
+import { AnimatePresence, motion } from 'motion-v'
+import { AtlasButton, AtlasDropdown } from '@atlas/design-system'
 import { useCatalogDrawer } from '@/modules/catalog/hooks/useCatalogDrawer'
+import { useCatalogFacets } from '@/modules/catalog/hooks/useCatalogFacets'
 import { useCatalogFilters } from '@/modules/catalog/hooks/useCatalogFilters'
 import { useCatalogSummary } from '@/modules/catalog/hooks/useCatalogSummary'
 
-const { query, activeCount } = storeToRefs(useCatalogFilters())
+const COUNT_TRANSITION = { type: 'spring', stiffness: 600, damping: 24 } as const
+
+const COUNT_HIDDEN = { scale: 0.4, opacity: 0 }
+
+const COUNT_VISIBLE = { scale: 1, opacity: 1 }
+
+const { activeCount } = storeToRefs(useCatalogFilters())
 
 const { setSort, setDistance } = useCatalogFilters()
+
+const { distanceOptions, distanceKey, sortOptions, sortKey } = storeToRefs(useCatalogFacets())
 
 const { totalLabel } = storeToRefs(useCatalogSummary())
 
@@ -81,45 +88,19 @@ const { toggle } = useCatalogDrawer()
   @apply flex flex-col gap-5;
 
   &__actions {
-    @apply flex items-center gap-2 overflow-x-auto border-b border-line pb-3;
+    @apply flex flex-wrap items-center gap-x-6 gap-y-3;
+  }
 
-    scrollbar-width: none;
+  &__filters {
+    @apply min-h-11 flex-none;
 
-    &::-webkit-scrollbar {
-      @apply hidden;
+    svg {
+      @apply h-5 w-5 flex-none;
     }
   }
 
-  &__action {
-    @apply relative inline-flex min-h-11 flex-none items-center gap-2 rounded-control border-none
-      bg-transparent px-3 text-sm font-semibold text-content transition-colors duration-fast ease-atlas;
-
-    &:hover {
-      @apply bg-surface-soft;
-    }
-
-    > svg {
-      @apply h-5 w-5 flex-none text-content-muted;
-    }
-
-    &--select {
-      @apply pr-8;
-    }
-  }
-
-  &__label {
-    @apply absolute h-px w-px overflow-hidden whitespace-nowrap;
-
-    clip-path: inset(50%);
-  }
-
-  &__select {
-    @apply cursor-pointer appearance-none border-none bg-transparent pr-1 text-sm font-semibold
-      text-content outline-none;
-  }
-
-  &__caret {
-    @apply pointer-events-none absolute right-2 h-4 w-4 text-content-muted;
+  &__group {
+    @apply ml-auto flex min-w-0 items-center gap-6;
   }
 
   &__count {

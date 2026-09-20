@@ -86,18 +86,16 @@
     <fieldset class="catalog-filters__group">
       <legend class="catalog-filters__legend">Distância</legend>
 
-      <input
-        class="catalog-filters__slider"
-        type="range"
-        min="0"
+      <AtlasSlider
+        id="catalog-distance-range"
+        label="Distância máxima"
+        :value="distanceValue"
+        :min="0"
         :max="distanceMax"
         :step="distanceStep"
-        :value="distanceValue"
-        aria-label="Distância máxima"
-        @change="setDistance(($event.target as HTMLInputElement).value)"
-      >
-
-      <p class="catalog-filters__hint">{{ distanceLabel }}</p>
+        :hint="distanceLabel"
+        @change="setDistance"
+      />
     </fieldset>
 
     <label class="catalog-filters__switch">
@@ -114,6 +112,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { formatPrice } from '@atlas/contracts'
+import { AtlasSlider } from '@atlas/design-system'
 import { useCatalogFacets } from '@/modules/catalog/hooks/useCatalogFacets'
 import { useCatalogFilters } from '@/modules/catalog/hooks/useCatalogFilters'
 
@@ -201,26 +200,6 @@ const { isCategoryChecked, isAvailabilityChecked, isBucketDisabled } = useCatalo
       &:focus {
         @apply border-brand outline-none;
       }
-    }
-  }
-
-  &__slider {
-    @apply h-11 w-full cursor-pointer appearance-none bg-transparent;
-
-    &::-webkit-slider-runnable-track {
-      @apply h-1.5 rounded-full bg-line;
-    }
-
-    &::-webkit-slider-thumb {
-      @apply -mt-[7px] h-5 w-5 appearance-none rounded-full border-2 border-surface bg-brand shadow-card;
-    }
-
-    &::-moz-range-track {
-      @apply h-1.5 rounded-full bg-line;
-    }
-
-    &::-moz-range-thumb {
-      @apply h-5 w-5 rounded-full border-2 border-surface bg-brand shadow-card;
     }
   }
 

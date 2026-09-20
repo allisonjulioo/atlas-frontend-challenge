@@ -1,6 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia'
-import type { Category } from '@atlas/contracts'
-import { DISTANCE_MAX_KM, DISTANCE_STEP_KM } from '@/modules/catalog/constants'
+import { SORT_KEYS, SORT_LABEL, type Category } from '@atlas/contracts'
+import type { SelectOption } from '@atlas/design-system'
+import { DISTANCE_MAX_KM, DISTANCE_OPTIONS, DISTANCE_STEP_KM } from '@/modules/catalog/constants'
 import { useCatalogFilters } from '@/modules/catalog/hooks/useCatalogFilters'
 import { useCatalogList } from '@/modules/catalog/hooks/useCatalogList'
 
@@ -25,6 +26,24 @@ export const useCatalogFacets = defineStore('catalogFacets', () => {
 
   const distanceValue = computed(() => query.value.maxDistanceKm ?? 0)
 
+  const distanceOptions = computed<SelectOption[]>(() => {
+    const steps = new Set<number>(DISTANCE_OPTIONS)
+
+    if (query.value.maxDistanceKm !== null) {
+      steps.add(query.value.maxDistanceKm)
+    }
+
+    return [...steps]
+      .sort((first, second) => first - second)
+      .map(km => ({ value: String(km), label: `Até ${km} km` }))
+  })
+
+  const distanceKey = computed(() => (query.value.maxDistanceKm === null ? '' : String(query.value.maxDistanceKm)))
+
+  const sortOptions = computed<SelectOption[]>(() => SORT_KEYS.map(key => ({ value: key, label: SORT_LABEL[key] })))
+
+  const sortKey = computed(() => query.value.sort)
+
   const distanceLabel = computed(() => {
     if (query.value.maxDistanceKm === null) {
       return 'Qualquer distância'
@@ -48,6 +67,10 @@ export const useCatalogFacets = defineStore('catalogFacets', () => {
     distanceStep,
     distanceValue,
     distanceLabel,
+    distanceOptions,
+    distanceKey,
+    sortOptions,
+    sortKey,
     isCategoryChecked,
     isAvailabilityChecked,
     isBucketDisabled,
