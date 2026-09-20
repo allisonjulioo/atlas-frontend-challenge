@@ -77,8 +77,9 @@ ATLAS_CATALOG_REMOTE=http://localhost:3002/_mf/mf-manifest.json
 ATLAS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3002,http://localhost:3003
 ```
 
-As duas primeiras são lidas em runtime (`runtimeConfig.public`). As `ATLAS_*` de remote são lidas
-em build: mudar de ambiente exige novo build do container.
+Esses são os valores padrão, escritos no código: em localhost, no `npm run dev` e no compose,
+nada precisa ser declarado. As duas primeiras são lidas em runtime (`runtimeConfig.public`); as
+`ATLAS_*` de remote são lidas em build, então mudar de ambiente exige novo build do container.
 
 ## Scripts
 

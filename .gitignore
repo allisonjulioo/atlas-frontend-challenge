@@ -1,4 +1,5 @@
 node_modules
+.vercel
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
@@ -16,7 +17,6 @@ coverage
 .DS_Store
 .env
 .env.*
-!.env.example
 node_modules/.ssr-cache
 api/vendor
 storybook-static
