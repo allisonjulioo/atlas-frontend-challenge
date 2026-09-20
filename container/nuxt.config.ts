@@ -14,6 +14,8 @@ export default defineNuxtConfig({
     { path: '~/shared/components', pathPrefix: false },
   ],
 
+  devtools: { componentInspector: false },
+
   app: {
     head: {
       htmlAttrs: { lang: 'pt-BR' },

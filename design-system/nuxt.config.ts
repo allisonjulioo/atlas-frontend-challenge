@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   modules: ['@module-federation/nuxt'],
 
   pages: false,
+  devtools: { componentInspector: false },
 
   app: {
     head: {

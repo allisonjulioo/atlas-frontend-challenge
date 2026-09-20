@@ -7,6 +7,8 @@ export default defineNuxtConfig({
 
   pages: true,
 
+  devtools: { componentInspector: false },
+
   app: {
     head: {
       htmlAttrs: { lang: 'pt-BR' },
