@@ -1,5 +1,5 @@
 <template>
-  <RemoteCatalogCatalogView title="Explorar" />
+  <RemoteCatalogCatalogView title="Encontrar profissionais" />
 </template>
 
 <script setup lang="ts">

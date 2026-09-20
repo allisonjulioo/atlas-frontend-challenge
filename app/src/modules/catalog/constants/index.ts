@@ -12,6 +12,8 @@ export const SEARCH_MAX_LENGTH = 80
 
 export const DESKTOP_MEDIA_QUERY = '(min-width: 1024px)'
 
+export const DRAWER_ANIMATION_MS = 260
+
 export const DISTANCE_MAX_KM = 20
 
 export const DISTANCE_STEP_KM = 1

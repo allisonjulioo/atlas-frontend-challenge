@@ -35,13 +35,16 @@
 
     <AtlasBackToTop />
 
-    <dialog :ref="setDialog" class="catalog-view__drawer" @close="close" @click.self="close">
-      <motion.div
-        class="catalog-view__drawer-inner"
-        :initial="DRAWER_HIDDEN"
-        :animate="isOpen ? DRAWER_VISIBLE : DRAWER_HIDDEN"
-        :transition="DRAWER_TRANSITION"
-      >
+    <motion.dialog
+      :ref="setDialog"
+      class="catalog-view__drawer"
+      :initial="DRAWER_HIDDEN"
+      :animate="isOpen ? DRAWER_VISIBLE : DRAWER_HIDDEN"
+      :transition="DRAWER_TRANSITION"
+      @cancel.prevent="close"
+      @click.self="close"
+    >
+      <div class="catalog-view__drawer-inner">
         <div class="catalog-view__drawer-scroll">
           <CatalogFilters />
         </div>
@@ -49,8 +52,8 @@
         <div class="catalog-view__drawer-footer">
           <AtlasButton block @click="close">{{ drawerActionLabel }}</AtlasButton>
         </div>
-      </motion.div>
-    </dialog>
+      </div>
+    </motion.dialog>
   </div>
 </template>
 
@@ -62,6 +65,7 @@ import { AtlasBackToTop, AtlasButton, AtlasEmptyState } from '@atlas/design-syst
 import { useCatalogDrawer } from '@/modules/catalog/hooks/useCatalogDrawer'
 import { useCatalogList } from '@/modules/catalog/hooks/useCatalogList'
 import { useCatalogSummary } from '@/modules/catalog/hooks/useCatalogSummary'
+import { DRAWER_ANIMATION_MS } from '@/modules/catalog/constants'
 import CatalogChips from '@/modules/catalog/components/CatalogChips.vue'
 import CatalogFilters from '@/modules/catalog/components/CatalogFilters.vue'
 import CatalogGrid from '@/modules/catalog/components/CatalogGrid.vue'
@@ -77,11 +81,11 @@ const SIDEBAR_VISIBLE = { opacity: 1, x: 0 }
 
 const SIDEBAR_HIDDEN = { opacity: 0, x: -24 }
 
-const DRAWER_TRANSITION = { type: 'spring', stiffness: 420, damping: 38 } as const
+const DRAWER_TRANSITION = { duration: DRAWER_ANIMATION_MS / 1000, ease: [0.22, 1, 0.36, 1] }
 
-const DRAWER_VISIBLE = { opacity: 1, y: 0 }
+const DRAWER_VISIBLE = { y: '0%' }
 
-const DRAWER_HIDDEN = { opacity: 0, y: 32 }
+const DRAWER_HIDDEN = { y: '100%' }
 
 const { errorMessage, pending } = storeToRefs(useCatalogList())
 

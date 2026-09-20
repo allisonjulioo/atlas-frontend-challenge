@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
-import { DESKTOP_MEDIA_QUERY } from '@/modules/catalog/constants'
+import { DESKTOP_MEDIA_QUERY, DRAWER_ANIMATION_MS } from '@/modules/catalog/constants'
 
 export const useCatalogDrawer = defineStore('catalogDrawer', () => {
   const dialog = ref<HTMLDialogElement | null>(null)
@@ -10,12 +10,21 @@ export const useCatalogDrawer = defineStore('catalogDrawer', () => {
   const isSidebarOpen = ref(true)
 
   const setDialog = (element: Element | ComponentPublicInstance | null) => {
-    dialog.value = element as HTMLDialogElement | null
+    const node = (element as ComponentPublicInstance | null)?.$el ?? element
+
+    dialog.value = (node ?? null) as HTMLDialogElement | null
   }
 
   const close = () => {
-    dialog.value?.close()
+    if (!isOpen.value) {
+      dialog.value?.close()
+
+      return
+    }
+
     isOpen.value = false
+
+    setTimeout(() => dialog.value?.close(), DRAWER_ANIMATION_MS)
   }
 
   const toggle = () => {

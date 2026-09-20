@@ -34,6 +34,8 @@ const props = withDefaults(defineProps<{ threshold?: number, label?: string }>()
   label: 'Voltar ao topo',
 })
 
+defineOptions({ inheritAttrs: false })
+
 const TRANSITION = { type: 'spring', stiffness: 520, damping: 34 } as const
 
 const HIDDEN = { opacity: 0, scale: 0.6, y: 12 }
