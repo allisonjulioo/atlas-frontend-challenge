@@ -1,0 +1,11 @@
+packages:
+  - container
+  - app
+  - design-system
+  - contracts
+
+allowBuilds:
+  esbuild: true
+  sass-embedded: true
+  sharp: true
+  unrs-resolver: true

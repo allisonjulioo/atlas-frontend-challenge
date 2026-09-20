@@ -1,0 +1,39 @@
+{
+  "name": "atlas-frontend-challenge",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
+  },
+  "workspaces": [
+    "container",
+    "app",
+    "design-system",
+    "contracts"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,container,app,design-system -c yellow,cyan,green,magenta \"PHP_CLI_SERVER_WORKERS=4 php -S 0.0.0.0:3001 -t api/public api/public/router.php\" \"cd container && npx nuxt dev\" \"cd app && npx nuxt dev\" \"cd design-system && npx nuxt dev\"",
+    "dev:web": "concurrently -n container,app,design-system -c cyan,green,magenta \"cd container && npx nuxt dev\" \"cd app && npx nuxt dev\" \"cd design-system && npx nuxt dev\"",
+    "dev:api": "PHP_CLI_SERVER_WORKERS=4 php -S 0.0.0.0:3001 -t api/public api/public/router.php",
+    "storybook": "cd design-system && npx storybook dev -p 6006",
+    "build-storybook": "cd design-system && npx storybook build -o storybook-static",
+    "build": "cd design-system && npx nuxt build && cd ../app && npx nuxt build && cd ../container && npx nuxt build",
+    "preview": "concurrently -n api,container,app,design-system -c yellow,cyan,green,magenta \"PHP_CLI_SERVER_WORKERS=4 php -S 0.0.0.0:3001 -t api/public api/public/router.php\" \"cd container && npx nuxt preview\" \"cd app && npx nuxt preview\" \"cd design-system && npx nuxt preview\"",
+    "seed": "php api/bin/seed.php",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "typecheck": "cd design-system && npx nuxt typecheck && cd ../app && npx nuxt typecheck && cd ../container && npx nuxt typecheck",
+    "test": "cd contracts && npx vitest run",
+    "clean": "rm -rf */.nuxt */.output node_modules/.cache"
+  },
+  "devDependencies": {
+    "@nuxt/eslint-config": "^1.17.0",
+    "@types/node": "^26.1.2",
+    "concurrently": "^10.0.5",
+    "eslint": "^10.11.0",
+    "prettier": "^3.9.8",
+    "typescript": "~5.9.3",
+    "vue-tsc": "^3.3.8"
+  }
+}

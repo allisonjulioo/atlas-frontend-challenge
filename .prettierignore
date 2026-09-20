@@ -1,0 +1,8 @@
+.nuxt
+.output
+dist
+node_modules
+api/vendor
+api/data
+pnpm-lock.yaml
+docs/challenge.md
