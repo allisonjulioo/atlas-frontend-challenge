@@ -28,7 +28,7 @@
           @change="setDistance(($event.target as HTMLSelectElement).value)"
         >
           <option value="">Distância</option>
-          <option v-for="km in distanceOptions" :key="km" :value="km">Até {{ km }} km</option>
+          <option v-for="km in DISTANCE_OPTIONS" :key="km" :value="km">Até {{ km }} km</option>
         </select>
       </div>
 
@@ -62,16 +62,14 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { SORT_KEYS, SORT_LABEL } from '@atlas/contracts'
+import { DISTANCE_OPTIONS } from '@/modules/catalog/constants'
 import { useCatalogDrawer } from '@/modules/catalog/hooks/useCatalogDrawer'
-import { useCatalogFacets } from '@/modules/catalog/hooks/useCatalogFacets'
 import { useCatalogFilters } from '@/modules/catalog/hooks/useCatalogFilters'
 import { useCatalogSummary } from '@/modules/catalog/hooks/useCatalogSummary'
 
 const { query, activeCount } = storeToRefs(useCatalogFilters())
 
 const { setSort, setDistance } = useCatalogFilters()
-
-const { distanceOptions } = storeToRefs(useCatalogFacets())
 
 const { totalLabel } = storeToRefs(useCatalogSummary())
 

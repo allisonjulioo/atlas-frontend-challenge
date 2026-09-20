@@ -84,41 +84,20 @@
     </fieldset>
 
     <fieldset class="catalog-filters__group">
-      <legend class="catalog-filters__legend">Avaliação</legend>
-
-      <label v-for="option in ratingOptions" :key="option.value" class="catalog-filters__option">
-        <input
-          type="radio"
-          name="min-rating"
-          :checked="query.minRating === option.value"
-          @change="setMinRating(option.value)"
-        >
-        <span class="catalog-filters__option-label">{{ option.label }}</span>
-      </label>
-
-      <label class="catalog-filters__option">
-        <input
-          type="radio"
-          name="min-rating"
-          :checked="query.minRating === null"
-          @change="setMinRating(null)"
-        >
-        <span class="catalog-filters__option-label">Qualquer nota</span>
-      </label>
-    </fieldset>
-
-    <fieldset class="catalog-filters__group">
       <legend class="catalog-filters__legend">Distância</legend>
 
-      <select
-        class="catalog-filters__select"
-        :value="query.maxDistanceKm ?? ''"
+      <input
+        class="catalog-filters__slider"
+        type="range"
+        min="0"
+        :max="distanceMax"
+        :step="distanceStep"
+        :value="distanceValue"
         aria-label="Distância máxima"
-        @change="setDistance(($event.target as HTMLSelectElement).value)"
+        @change="setDistance(($event.target as HTMLInputElement).value)"
       >
-        <option value="">Qualquer distância</option>
-        <option v-for="km in distanceOptions" :key="km" :value="km">Até {{ km }} km</option>
-      </select>
+
+      <p class="catalog-filters__hint">{{ distanceLabel }}</p>
     </fieldset>
 
     <label class="catalog-filters__switch">
@@ -145,7 +124,6 @@ const {
   toggleAvailability,
   setMinPrice,
   setMaxPrice,
-  setMinRating,
   setDistance,
   setVerifiedOnly,
   clearAll,
@@ -156,8 +134,10 @@ const {
   availabilityBuckets,
   priceRange,
   hasFacets,
-  ratingOptions,
-  distanceOptions,
+  distanceMax,
+  distanceStep,
+  distanceValue,
+  distanceLabel,
 } = storeToRefs(useCatalogFacets())
 
 const { isCategoryChecked, isAvailabilityChecked, isBucketDisabled } = useCatalogFacets()
@@ -165,7 +145,7 @@ const { isCategoryChecked, isAvailabilityChecked, isBucketDisabled } = useCatalo
 
 <style lang="scss" scoped>
 .catalog-filters {
-  @apply flex flex-col gap-8;
+  @apply flex flex-col gap-4;
 
   &__head {
     @apply flex items-center justify-between gap-3;
@@ -180,7 +160,7 @@ const { isCategoryChecked, isAvailabilityChecked, isBucketDisabled } = useCatalo
   }
 
   &__group {
-    @apply flex flex-col gap-3 border-none p-0;
+    @apply flex flex-col border-none p-0;
   }
 
   &__legend {
@@ -215,16 +195,37 @@ const { isCategoryChecked, isAvailabilityChecked, isBucketDisabled } = useCatalo
     @apply flex flex-col gap-1 text-xs text-content-muted;
 
     input {
-      @apply min-h-10 w-full rounded-control border-none bg-surface-soft px-2 text-sm text-content;
+      @apply min-h-10 w-full rounded-control border border-line bg-surface px-2 text-sm text-content
+        transition-colors duration-fast ease-atlas;
+
+      &:focus {
+        @apply border-brand outline-none;
+      }
     }
   }
 
-  &__select {
-    @apply min-h-10 w-full rounded-control border-none bg-surface-soft px-2 text-sm text-content;
+  &__slider {
+    @apply h-11 w-full cursor-pointer appearance-none bg-transparent;
+
+    &::-webkit-slider-runnable-track {
+      @apply h-1.5 rounded-full bg-line;
+    }
+
+    &::-webkit-slider-thumb {
+      @apply -mt-[7px] h-5 w-5 appearance-none rounded-full border-2 border-surface bg-brand shadow-card;
+    }
+
+    &::-moz-range-track {
+      @apply h-1.5 rounded-full bg-line;
+    }
+
+    &::-moz-range-thumb {
+      @apply h-5 w-5 rounded-full border-2 border-surface bg-brand shadow-card;
+    }
   }
 
   &__hint {
-    @apply text-xs text-content-subtle;
+    @apply mt-2 text-xs text-content-subtle;
   }
 
   &__switch {

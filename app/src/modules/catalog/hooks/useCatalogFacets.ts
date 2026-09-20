@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia'
 import type { Category } from '@atlas/contracts'
-import { DISTANCE_OPTIONS, RATING_OPTIONS } from '@/modules/catalog/constants'
+import { DISTANCE_MAX_KM, DISTANCE_STEP_KM } from '@/modules/catalog/constants'
 import { useCatalogFilters } from '@/modules/catalog/hooks/useCatalogFilters'
 import { useCatalogList } from '@/modules/catalog/hooks/useCatalogList'
 
@@ -19,9 +19,19 @@ export const useCatalogFacets = defineStore('catalogFacets', () => {
 
   const hasFacets = computed(() => facets.value !== null)
 
-  const ratingOptions = RATING_OPTIONS
+  const distanceMax = computed(() => DISTANCE_MAX_KM)
 
-  const distanceOptions = DISTANCE_OPTIONS
+  const distanceStep = computed(() => DISTANCE_STEP_KM)
+
+  const distanceValue = computed(() => query.value.maxDistanceKm ?? 0)
+
+  const distanceLabel = computed(() => {
+    if (query.value.maxDistanceKm === null) {
+      return 'Qualquer distância'
+    }
+
+    return `Até ${query.value.maxDistanceKm} km`
+  })
 
   const isCategoryChecked = (value: Category) => query.value.categories.includes(value)
 
@@ -34,8 +44,10 @@ export const useCatalogFacets = defineStore('catalogFacets', () => {
     availabilityBuckets,
     priceRange,
     hasFacets,
-    ratingOptions,
-    distanceOptions,
+    distanceMax,
+    distanceStep,
+    distanceValue,
+    distanceLabel,
     isCategoryChecked,
     isAvailabilityChecked,
     isBucketDisabled,

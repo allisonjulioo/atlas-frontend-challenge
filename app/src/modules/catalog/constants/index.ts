@@ -10,13 +10,11 @@ export const LOAD_MORE_ROOT_MARGIN = '400px 0px'
 
 export const SEARCH_MAX_LENGTH = 80
 
-export const RATING_OPTIONS = [
-  { value: 4.5, label: '4,5 ou mais' },
-  { value: 4, label: '4,0 ou mais' },
-  { value: 3.5, label: '3,5 ou mais' },
-] as const
+export const DISTANCE_MAX_KM = 20
 
-export const DISTANCE_OPTIONS = [2, 5, 10, 25, 50] as const
+export const DISTANCE_STEP_KM = 1
+
+export const DISTANCE_OPTIONS = [5, 10, 15, 20] as const
 
 export const CLEAR_ALL_FILTERS: Partial<CatalogQuery> = {
   q: '',

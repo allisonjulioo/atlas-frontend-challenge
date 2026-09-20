@@ -54,12 +54,10 @@ export const useCatalogFilters = defineStore('catalogFilters', () => {
     apply({ sort: value as SortKey })
   }
 
-  const setDistance = (value: string) => {
-    apply({ maxDistanceKm: value === '' ? null : Number(value) })
-  }
+  const setDistance = (value: string | number) => {
+    const km = Number(value)
 
-  const setMinRating = (value: number | null) => {
-    apply({ minRating: value })
+    apply({ maxDistanceKm: value === '' || km === 0 ? null : km })
   }
 
   const setMinPrice = (value: string) => {
@@ -92,7 +90,6 @@ export const useCatalogFilters = defineStore('catalogFilters', () => {
     toggleAvailability,
     setSort,
     setDistance,
-    setMinRating,
     setMinPrice,
     setMaxPrice,
     setVerifiedOnly,
