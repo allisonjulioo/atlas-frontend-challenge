@@ -6,15 +6,18 @@ const meta = {
   title: 'Navegação/BottomNav',
   component: BottomNav,
   tags: ['autodocs'],
-  parameters: {
-    layout: 'fullscreen',
-    viewport: { defaultViewport: 'mobile1' },
-  },
+  parameters: { layout: 'fullscreen' },
+  globals: { viewport: { value: 'mobile1', isRotated: false } },
   args: { items: navItems },
   render: args => ({
     components: { BottomNav },
     setup: () => ({ args }),
-    template: '<div class="relative h-40"><BottomNav v-bind="args" /></div>',
+    template: `
+      <div class="relative mx-auto h-40 w-full max-w-sm overflow-hidden rounded-xl border border-line bg-canvas
+        [&_.atlas-bottom-nav]:!absolute [&_.atlas-bottom-nav]:!grid">
+        <BottomNav v-bind="args" />
+      </div>
+    `,
   }),
 } satisfies Meta<typeof BottomNav>
 
