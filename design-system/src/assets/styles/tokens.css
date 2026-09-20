@@ -27,7 +27,7 @@
   --atlas-content-on-brand: var(--atlas-white);
   --atlas-content-on-accent: var(--atlas-white);
 
-  --atlas-header-height: 4rem;
+  --atlas-header-height: 4.5rem;
   --atlas-header-offset: calc(var(--atlas-header-height) + 1.5rem);
 
   --atlas-shadow-sm: 0 1px 2px rgb(41 50 65 / 8%), 0 1px 3px rgb(41 50 65 / 5%);
