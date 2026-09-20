@@ -18,6 +18,7 @@
     "@module-federation/nuxt": "^0.1.0",
     "@pinia/nuxt": "^1.0.2",
     "autoprefixer": "^10.6.1",
+    "motion-v": "^2.4.4",
     "nuxt": "^4.5.2",
     "pinia": "^4.0.3",
     "postcss": "^8.5.28",

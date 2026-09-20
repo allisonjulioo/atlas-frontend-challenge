@@ -11,3 +11,8 @@ export interface BottomNavItem {
   active?: boolean
   badge?: string
 }
+
+export interface SelectOption {
+  value: string
+  label: string
+}
