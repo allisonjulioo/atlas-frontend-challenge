@@ -52,28 +52,28 @@
         <label class="catalog-filters__range-field">
           <span>Mínimo</span>
           <input
-            type="number"
+            :value="min"
+            type="text"
             inputmode="numeric"
-            step="5"
-            :min="priceRange.min"
-            :max="priceRange.max"
-            :value="query.minPrice ?? ''"
+            autocomplete="off"
+            :maxlength="maxLength"
             :placeholder="String(priceRange.min)"
-            @change="setMinPrice(($event.target as HTMLInputElement).value)"
+            @input="maskMin"
+            @change="commitMin"
           >
         </label>
 
         <label class="catalog-filters__range-field">
           <span>Máximo</span>
           <input
-            type="number"
+            :value="max"
+            type="text"
             inputmode="numeric"
-            step="5"
-            :min="priceRange.min"
-            :max="priceRange.max"
-            :value="query.maxPrice ?? ''"
+            autocomplete="off"
+            :maxlength="maxLength"
             :placeholder="String(priceRange.max)"
-            @change="setMaxPrice(($event.target as HTMLInputElement).value)"
+            @input="maskMax"
+            @change="commitMax"
           >
         </label>
       </div>
@@ -115,18 +115,21 @@ import { formatPrice } from '@atlas/contracts'
 import { AtlasSlider } from '@atlas/design-system'
 import { useCatalogFacets } from '@/modules/catalog/hooks/useCatalogFacets'
 import { useCatalogFilters } from '@/modules/catalog/hooks/useCatalogFilters'
+import { useCatalogPrice } from '@/modules/catalog/hooks/useCatalogPrice'
 
 const { query, activeCount } = storeToRefs(useCatalogFilters())
 
 const {
   toggleCategory,
   toggleAvailability,
-  setMinPrice,
-  setMaxPrice,
   setDistance,
   setVerifiedOnly,
   clearAll,
 } = useCatalogFilters()
+
+const { min, max, maxLength } = storeToRefs(useCatalogPrice())
+
+const { maskMin, maskMax, commitMin, commitMax } = useCatalogPrice()
 
 const {
   categoryBuckets,

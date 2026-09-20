@@ -114,7 +114,8 @@ Abra `http://localhost:8080`. O endereço em `ATLAS_PUBLIC_ORIGIN` precisa ser a
 navegador; as buscas do SSR pela API e pelos remotes usam a rede interna do contêiner.
 
 Para criar um deploy de preview usando a Vercel CLI, execute `vercel deploy` na raiz do repositório.
-O `Dockerfile.vercel` é detectado automaticamente. No ambiente da Vercel, a imagem usa `VERCEL_URL`
+O [vercel.json](vercel.json) seleciona o `Dockerfile.vercel` para o build. No ambiente da Vercel,
+a imagem usa `VERCEL_URL`
 para montar os endereços dos remotes; se usar um domínio próprio, configure `ATLAS_PUBLIC_ORIGIN`
 apenas no ambiente de produção, com a origem completa (por exemplo,
 `https://catalogo.exemplo.com`). Depois de validar o preview,

@@ -5,10 +5,6 @@
         <RemoteUiLogo class="app-header__logo" />
       </NuxtLink>
 
-      <nav class="app-header__nav" aria-label="Principal">
-        <NuxtLink :to="{ name: ROUTE_NAME.catalogList }">Catálogo</NuxtLink>
-      </nav>
-
       <nav class="app-header__projects" aria-label="Projetos">
         <a
           v-for="link in links"
@@ -45,23 +41,11 @@ const { links } = useProjectLinks()
   }
 
   &__brand {
-    @apply mr-auto flex h-8 items-center no-underline lg:mr-0;
+    @apply mr-auto flex h-10 items-center no-underline;
   }
 
   &__logo {
-    @apply h-7;
-  }
-
-  &__nav {
-    @apply hidden gap-4 text-sm lg:mr-auto lg:flex;
-
-    a {
-      @apply text-content-muted no-underline;
-
-      &.router-link-active {
-        @apply font-semibold text-content;
-      }
-    }
+    @apply h-10;
   }
 
   &__projects {

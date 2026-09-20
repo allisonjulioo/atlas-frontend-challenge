@@ -2,7 +2,6 @@
   <div class="harness">
     <header class="harness__bar">
       <strong>Remote <code>catalog</code></strong>
-      <span>modo standalone. O container consome estes mesmos componentes via Module Federation</span>
     </header>
 
     <main class="harness__main">
