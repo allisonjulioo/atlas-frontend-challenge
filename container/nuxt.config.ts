@@ -52,6 +52,7 @@ export default defineNuxtConfig({
 
   nitro: {
     compressPublicAssets: { brotli: true, gzip: true },
+    externals: { trace: false },
   },
 
   vite: {
@@ -59,6 +60,7 @@ export default defineNuxtConfig({
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
+      dedupe: ['vue', '@vue/runtime-core', '@vue/runtime-dom', '@vue/shared'],
     },
   },
 
