@@ -20,7 +20,9 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: 'pt-BR' },
       link: [
-        { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' },
+        { rel: 'icon', href: '/favicon.ico', sizes: '32x32' },
+        { rel: 'icon', type: 'image/png', href: '/favicon.png', sizes: '120x120' },
+        { rel: 'apple-touch-icon', href: '/favicon.png' },
         { rel: 'preconnect', href: new URL(UI_REMOTE).origin, crossorigin: '' },
         { rel: 'preconnect', href: new URL(CATALOG_REMOTE).origin, crossorigin: '' },
         { rel: 'dns-prefetch', href: 'https://randomuser.me' },

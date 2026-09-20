@@ -6,7 +6,13 @@ export default defineConfig({
   lang: 'pt-BR',
   cleanUrls: true,
   lastUpdated: true,
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.ico', sizes: '32x32' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png', sizes: '120x120' }],
+  ],
   themeConfig: {
+    logo: '/logo.svg',
+    siteTitle: false,
     socialLinks: [
       { icon: 'github', link: 'https://github.com/allisonjulioo/atlas-frontend-challenge' },
     ],
