@@ -10,7 +10,7 @@
 | Federation | @module-federation/nuxt        | 0.1     |
 | Estado     | Pinia                          | 4.x     |
 | CSS        | Tailwind CSS + SCSS            | 3.4     |
-| Monorepo   | workspaces (npm, yarn ou pnpm) | ,       |
+| Monorepo   | workspaces do `package.json`   | ,       |
 | API        | PHP + Slim                     | 8.3 / 4 |
 
 ## Raiz
@@ -82,5 +82,5 @@ em build: mudar de ambiente exige novo build do container.
 
 ## Scripts
 
-Os scripts de raiz chamam os binários locais com `npx`, sem amarrar gerenciador. `npm install`,
-`yarn install` ou `pnpm install` funcionam igual.
+Os scripts de raiz chamam os binários locais com `npx`, sem amarrar gerenciador. Instalar com
+qualquer um que entenda `workspaces` dá no mesmo, e a versão de Node está no `.nvmrc`.

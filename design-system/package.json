@@ -22,7 +22,7 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "@atlas/contracts": "workspace:*",
+    "@atlas/contracts": "*",
     "@module-federation/nuxt": "^0.1.0",
     "autoprefixer": "^10.6.1",
     "motion-v": "^2.4.4",

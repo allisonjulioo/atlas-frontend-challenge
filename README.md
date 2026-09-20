@@ -24,8 +24,8 @@ navegador ──▶ container (host, SSR)
 
 ### Pré-requisitos
 
-- Node `^22.18`, `^24.11` ou `>=26`
-- npm, yarn ou pnpm, o repositório não fixa gerenciador
+- Node `^22.18`, `^24.11` ou `>=26`, a versão do `.nvmrc`
+- Um gerenciador de pacotes com `workspaces`, o repositório não fixa qual
 - PHP 8.3 ou superior com `ext-mbstring` e `ext-json`, mais Composer 2
 
 ### 1. Dependências
@@ -103,7 +103,7 @@ projetos Nuxt rodam do `.output` em Node 24.
 Para um projeto só: `cd app && npx nuxt dev`.
 
 Os scripts de raiz chamam os binários locais com `npx` e o monorepo usa `workspaces` do
-`package.json`, então `npm`, `yarn` e `pnpm` funcionam igual, nenhum é exigido.
+`package.json`, então qualquer gerenciador que entenda esse campo funciona, nenhum é exigido.
 
 Em produção, suba os remotes antes do container que os referencia, e mantenha os assets da versão
 anterior no ar enquanto houver sessão aberta.

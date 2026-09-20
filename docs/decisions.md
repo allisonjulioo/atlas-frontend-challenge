@@ -120,14 +120,14 @@ store.
 
 ## 9. Sem amarrar o gerenciador de pacotes
 
-**Contexto.** O monorepo começou com pnpm fixado em `packageManager` e Turborepo orquestrando as
-tarefas.
+**Contexto.** O monorepo começou com um gerenciador fixado em `packageManager` e Turborepo
+orquestrando as tarefas.
 
 **Problema.** O Turborepo exige `devEngines.packageManager` declarado **e** casando com o lockfile
 presente. Isso obriga quem clona a usar exatamente o gerenciador declarado.
 
-**Escolha.** Sem Turborepo. `workspaces` no `package.json` (entendido por npm, yarn e pnpm) e
-scripts de raiz que chamam os binários locais com `npx`. `concurrently` sobe os três projetos em
+**Escolha.** Sem Turborepo, sem lockfile versionado e sem `packageManager`. `workspaces` no
+`package.json` e scripts de raiz que chamam os binários locais com `npx`. `concurrently` sobe os três projetos em
 paralelo.
 
 **Custo.** Perde-se o cache de build e o grafo de tarefas do Turborepo. Para quatro projetos e uma
