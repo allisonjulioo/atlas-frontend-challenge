@@ -9,16 +9,18 @@
     "container",
     "app",
     "design-system",
-    "contracts"
+    "contracts",
+    "docs"
   ],
   "scripts": {
-    "dev": "concurrently -n api,container,app,design-system -c yellow,cyan,green,magenta \"PHP_CLI_SERVER_WORKERS=4 php -S 0.0.0.0:3001 -t api/public api/public/router.php\" \"cd container && npx nuxt dev\" \"cd app && npx nuxt dev\" \"cd design-system && npx nuxt dev\"",
-    "dev:web": "concurrently -n container,app,design-system -c cyan,green,magenta \"cd container && npx nuxt dev\" \"cd app && npx nuxt dev\" \"cd design-system && npx nuxt dev\"",
+    "dev": "concurrently -n api,container,app,design-system,docs -c yellow,cyan,green,magenta,blue \"PHP_CLI_SERVER_WORKERS=4 php -S 0.0.0.0:3001 -t api/public api/public/router.php\" \"cd container && npx nuxt dev\" \"cd app && npx nuxt dev\" \"cd design-system && npx nuxt dev\" \"cd docs && npx vitepress dev --port 3004\"",
+    "dev:web": "concurrently -n container,app,design-system,docs -c cyan,green,magenta,blue \"cd container && npx nuxt dev\" \"cd app && npx nuxt dev\" \"cd design-system && npx nuxt dev\" \"cd docs && npx vitepress dev --port 3004\"",
     "dev:api": "PHP_CLI_SERVER_WORKERS=4 php -S 0.0.0.0:3001 -t api/public api/public/router.php",
+    "docs": "cd docs && npx vitepress dev --port 3004",
     "storybook": "cd design-system && npx storybook dev -p 6006",
     "build-storybook": "cd design-system && npx storybook build -o storybook-static",
-    "build": "cd design-system && npx nuxt build && cd ../app && npx nuxt build && cd ../container && npx nuxt build",
-    "preview": "concurrently -n api,container,app,design-system -c yellow,cyan,green,magenta \"PHP_CLI_SERVER_WORKERS=4 php -S 0.0.0.0:3001 -t api/public api/public/router.php\" \"cd container && npx nuxt preview\" \"cd app && npx nuxt preview\" \"cd design-system && npx nuxt preview\"",
+    "build": "cd design-system && npx nuxt build && cd ../app && npx nuxt build && cd ../container && npx nuxt build && cd ../docs && npx vitepress build",
+    "preview": "concurrently -n api,container,app,design-system,docs -c yellow,cyan,green,magenta,blue \"PHP_CLI_SERVER_WORKERS=4 php -S 0.0.0.0:3001 -t api/public api/public/router.php\" \"cd container && npx nuxt preview\" \"cd app && npx nuxt preview\" \"cd design-system && npx nuxt preview\" \"cd docs && npx vitepress preview --port 3004\"",
     "seed": "php api/bin/seed.php",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

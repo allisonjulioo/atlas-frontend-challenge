@@ -3,8 +3,10 @@ packages:
   - app
   - design-system
   - contracts
+  - docs
 
 allowBuilds:
+  '@parcel/watcher': set this to true or false
   esbuild: true
   sass-embedded: true
   sharp: true

@@ -15,3 +15,6 @@ coverage
 node_modules/.ssr-cache
 api/vendor
 storybook-static
+
+docs/.vitepress/dist
+docs/.vitepress/cache
