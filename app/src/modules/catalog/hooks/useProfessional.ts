@@ -20,35 +20,40 @@ export const useProfessional = defineStore('professional', () => {
 
   const slug = computed(() => String(route.params.slug ?? ''))
 
-  const load = async () => {
+  const load = () => {
     pending.value = true
     notFound.value = false
     errorMessage.value = null
 
-    try {
-      professional.value = await getProfessionalService(slug.value)
-      related.value = await getRelatedProfessionalsService(slug.value).catch(() => [])
-    }
-    catch (error) {
-      professional.value = null
-      related.value = []
-      notFound.value = isNotFoundError(error)
-      errorMessage.value = notFound.value ? null : 'Não foi possível carregar este perfil agora.'
-    }
-    finally {
-      pending.value = false
-      set(buildProfilePageMeta(professional.value))
-    }
+    return getProfessionalService(slug.value)
+      .then((result) => {
+        professional.value = result
+
+        return getRelatedProfessionalsService(slug.value).catch(() => [])
+      })
+      .then((items) => {
+        related.value = items
+      })
+      .catch((error) => {
+        professional.value = null
+        related.value = []
+        notFound.value = isNotFoundError(error)
+        errorMessage.value = notFound.value ? null : 'Não foi possível carregar este perfil agora.'
+      })
+      .finally(() => {
+        pending.value = false
+        set(buildProfilePageMeta(professional.value))
+      })
   }
 
-  const init = async () => {
+  const init = () => {
     if (professional.value?.slug === slug.value) {
       set(buildProfilePageMeta(professional.value))
 
-      return
+      return Promise.resolve()
     }
 
-    await load()
+    return load()
   }
 
   const reset = () => {
