@@ -61,13 +61,12 @@ permite tema claro e escuro sem recompilar e sem duplicar classe `dark:` em todo
 
 ---
 
-## 5. API em PHP com Slim, não Laravel
+## 5. API em PHP com Slim
 
 **Escolha.** Slim 4, duas dependências, sem ORM.
 
 **Por quê.** A API é leitura sobre um JSON em memória: filtro, ordenação, paginação e facetas. Não
-há migração, fila, autenticação nem relacionamento. Laravel traria container de serviço, Eloquent e
-artisan para um caso que não os usa.
+há migração, fila, autenticação nem relacionamento. Frameworks como Laravel traria container de serviço, Eloquent e artisan para um caso que não os usa.
 
 **Custo.** Roteamento, middleware e DI são explícitos. Para este escopo isso é legibilidade, não
 peso.

@@ -79,7 +79,7 @@ export const useCatalog = defineStore('catalog', () => {
 
   const { init } = useCatalog()
 
-  await init()
+  onMounted(init)
 </script>
 ```
 
