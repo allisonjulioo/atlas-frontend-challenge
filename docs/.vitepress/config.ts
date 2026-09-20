@@ -5,7 +5,6 @@ export default defineConfig({
   description: 'Documentação do catálogo de profissionais autônomos',
   lang: 'pt-BR',
   cleanUrls: true,
-  lastUpdated: true,
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico', sizes: '32x32' }],
     ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png', sizes: '120x120' }],
