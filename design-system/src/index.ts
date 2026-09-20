@@ -1,4 +1,5 @@
 export { default as AtlasAvatar } from './components/exposed/Avatar.vue'
+export { default as AtlasBackToTop } from './components/exposed/BackToTop.vue'
 export { default as AtlasBadge } from './components/exposed/Badge.vue'
 export { default as AtlasBottomNav } from './components/exposed/BottomNav.vue'
 export { default as AtlasButton } from './components/exposed/Button.vue'
