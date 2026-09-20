@@ -11,6 +11,7 @@ import {
   type SortKey,
 } from '@atlas/contracts'
 import { CLEAR_ALL_FILTERS } from '@/modules/catalog/constants'
+import { scrollToTop } from '@/shared/utils/scroll-to-top'
 
 export const useCatalogFilters = defineStore('catalogFilters', () => {
   const route = useRoute()
@@ -27,11 +28,11 @@ export const useCatalogFilters = defineStore('catalogFilters', () => {
   const apply = (patch: Partial<CatalogQuery>, mode: NavigationMode = 'push') => {
     const next = serializeCatalogQuery({ ...query.value, ...patch, page: 1 })
 
-    if (mode === 'replace') {
-      return router.replace({ query: next })
-    }
+    const navigation = mode === 'replace'
+      ? router.replace({ query: next })
+      : router.push({ query: next })
 
-    return router.push({ query: next })
+    return navigation.then(scrollToTop)
   }
 
   const toggleIn = <T extends string>(list: T[], value: T) => {
