@@ -26,53 +26,53 @@ export const useCatalogList = defineStore('catalogList', () => {
     set(buildCatalogPageMeta(query.value, total.value))
   }
 
-  const load = async () => {
+  const load = () => {
     pending.value = true
     errorMessage.value = null
     extra.value = []
     loadedPage.value = 1
 
-    try {
-      response.value = await getCatalogService({ ...query.value, page: 1 })
-      publishMeta()
-    }
-    catch {
-      errorMessage.value = 'Não foi possível carregar o catálogo agora.'
-    }
-    finally {
-      pending.value = false
-    }
+    return getCatalogService({ ...query.value, page: 1 })
+      .then((result) => {
+        response.value = result
+        publishMeta()
+      })
+      .catch(() => {
+        errorMessage.value = 'Não foi possível carregar o catálogo agora.'
+      })
+      .finally(() => {
+        pending.value = false
+      })
   }
 
-  const loadMore = async () => {
+  const loadMore = () => {
     if (loadingMore.value || items.value.length >= total.value) {
-      return
+      return Promise.resolve()
     }
 
     loadingMore.value = true
 
-    try {
-      const page = await getCatalogService({ ...query.value, page: loadedPage.value + 1 })
-
-      extra.value = [...extra.value, ...page.items]
-      loadedPage.value += 1
-    }
-    catch {
-      errorMessage.value = 'Não foi possível carregar mais resultados.'
-    }
-    finally {
-      loadingMore.value = false
-    }
+    return getCatalogService({ ...query.value, page: loadedPage.value + 1 })
+      .then((page) => {
+        extra.value = [...extra.value, ...page.items]
+        loadedPage.value += 1
+      })
+      .catch(() => {
+        errorMessage.value = 'Não foi possível carregar mais resultados.'
+      })
+      .finally(() => {
+        loadingMore.value = false
+      })
   }
 
-  const init = async () => {
+  const init = () => {
     if (response.value) {
       publishMeta()
 
-      return
+      return Promise.resolve()
     }
 
-    await load()
+    return load()
   }
 
   const reset = () => {
