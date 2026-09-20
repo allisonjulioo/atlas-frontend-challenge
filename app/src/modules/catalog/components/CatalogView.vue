@@ -104,7 +104,8 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .catalog-view {
-  @apply grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start lg:gap-x-12;
+  @apply grid grid-cols-[minmax(0,1fr)] gap-8
+    lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start lg:gap-x-12;
 
   @screen lg {
     transition: grid-template-columns 220ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -136,13 +137,14 @@ onBeforeUnmount(() => {
   }
 
   &__main {
-    @apply flex flex-col gap-6;
+    @apply flex min-w-0 flex-col gap-6;
 
     grid-area: main;
   }
 
   &__sidebar {
-    @apply hidden lg:sticky lg:top-8 lg:block lg:max-h-[calc(100dvh-4rem)] lg:overflow-y-auto;
+    @apply hidden lg:sticky lg:top-[var(--atlas-header-offset)] lg:block
+      lg:max-h-[calc(100dvh-var(--atlas-header-offset)-1.5rem)] lg:overflow-y-auto;
 
     grid-area: sidebar;
 

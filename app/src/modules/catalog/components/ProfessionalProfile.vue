@@ -118,7 +118,8 @@ onBeforeUnmount(reset)
 
 <style lang="scss" scoped>
 .professional-profile {
-  @apply grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-x-14;
+  @apply grid grid-cols-[minmax(0,1fr)] gap-10
+    lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-x-14;
 
   grid-template-areas: 'header' 'cta' 'body';
 
@@ -127,7 +128,7 @@ onBeforeUnmount(reset)
   }
 
   &__header {
-    @apply flex items-start gap-6;
+    @apply flex min-w-0 items-start gap-4 md:gap-6;
 
     grid-area: header;
   }
@@ -141,7 +142,7 @@ onBeforeUnmount(reset)
   }
 
   &__name {
-    @apply text-3xl font-bold;
+    @apply text-2xl font-bold md:text-3xl;
   }
 
   &__profession {
@@ -153,7 +154,7 @@ onBeforeUnmount(reset)
   }
 
   &__cta {
-    @apply flex flex-col gap-5 rounded-card bg-surface p-6 shadow-card lg:sticky lg:top-8;
+    @apply flex flex-col gap-5 rounded-card bg-surface p-6 shadow-card lg:sticky lg:top-[var(--atlas-header-offset)];
 
     grid-area: cta;
   }
