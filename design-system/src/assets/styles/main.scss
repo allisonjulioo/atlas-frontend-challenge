@@ -1,0 +1,54 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased;
+
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply min-h-dvh bg-canvas font-sans text-base text-content;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply leading-tight;
+
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :where(input, select, textarea) {
+    @apply outline-none;
+
+    &:focus,
+    &:focus-visible {
+      @apply outline-none ring-0;
+    }
+  }
+
+  :where(a, button, [tabindex]):focus-visible {
+    @apply outline-none ring-2 ring-focus ring-offset-2 ring-offset-canvas;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
