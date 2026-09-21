@@ -26,7 +26,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "typecheck": "cd design-system && npx nuxt typecheck && cd ../app && npx nuxt typecheck && cd ../container && npx nuxt typecheck",
-    "test": "cd contracts && npx vitest run",
+    "test": "cd contracts && npx vitest run && cd ../app && npx vitest run",
+    "test:coverage": "cd app && npx vitest run --coverage",
     "clean": "rm -rf */.nuxt */.output node_modules/.cache"
   },
   "devDependencies": {
