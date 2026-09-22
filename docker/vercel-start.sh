@@ -3,6 +3,8 @@ set -eu
 
 if [ -n "${ATLAS_PUBLIC_ORIGIN:-}" ]; then
     origin=${ATLAS_PUBLIC_ORIGIN%/}
+elif [ -n "${VERCEL_PROJECT_PRODUCTION_URL:-}" ]; then
+    origin="https://${VERCEL_PROJECT_PRODUCTION_URL}"
 elif [ -n "${VERCEL_URL:-}" ]; then
     origin="https://${VERCEL_URL}"
 else
@@ -14,10 +16,10 @@ case "$origin" in
     *) echo 'ATLAS_PUBLIC_ORIGIN must start with http:// or https://' >&2; exit 1 ;;
 esac
 
-export NUXT_PUBLIC_API_BASE="$origin/api"
+export NUXT_PUBLIC_API_BASE="/api"
 export NUXT_PUBLIC_SITE_URL="$origin"
-export NUXT_PUBLIC_DOCS_URL="$origin/docs/"
-export NUXT_PUBLIC_STORYBOOK_URL="$origin/storybook/"
+export NUXT_PUBLIC_DOCS_URL="/docs/"
+export NUXT_PUBLIC_STORYBOOK_URL="/storybook/"
 export ATLAS_ALLOWED_ORIGINS="$origin"
 export ATLAS_PUBLIC_ORIGIN="$origin"
 
